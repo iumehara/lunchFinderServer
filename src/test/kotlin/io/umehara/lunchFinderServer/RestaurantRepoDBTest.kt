@@ -30,6 +30,18 @@ class RestaurantRepoDBTest {
     }
 
     @Test
+    fun getReturnsRestaurant() {
+        val seedRestaurant = RestaurantModel(1L, "Pintokona")
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
+
+
+        val restaurant = restaurantRepoDB.get(1L)
+
+
+        assertThat(restaurant, equalTo(seedRestaurant))
+    }
+
+    @Test
     fun createPersistsNewRestaurant() {
         val restaurantModelNew = RestaurantModelNew("Green Asia")
         val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)

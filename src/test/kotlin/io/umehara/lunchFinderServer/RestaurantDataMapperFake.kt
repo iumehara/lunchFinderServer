@@ -11,6 +11,11 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         return restaurants
     }
 
+    override fun get(id: Long): RestaurantModel {
+        val filteredRestaurants = restaurants.filter { it.id == id }
+        return filteredRestaurants[0]
+    }
+
     override fun create(restaurantModelNew: RestaurantModelNew): Long {
         val id = restaurants.size + 1L
         val newRestaurant = RestaurantModel(id, restaurantModelNew.name)

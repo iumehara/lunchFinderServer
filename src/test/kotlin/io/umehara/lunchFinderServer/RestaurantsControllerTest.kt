@@ -42,6 +42,18 @@ class RestaurantsControllerTest {
     }
 
     @Test
+    fun showReturnsRestaurant() {
+        val request = mockController.perform(get("/restaurants/1"))
+
+
+        //language=json
+        val expectedJSON = "{\"id\": 1, \"name\": \"Pintokona\"}\n"
+        request
+                .andExpect(status().isOk)
+                .andExpect(content().json(expectedJSON))
+    }
+
+    @Test
     fun createCallsRepoWithCorrectArguments() {
         //language=json
         val requestBody = "{\n  \"name\": \"Green Asia\"\n}"

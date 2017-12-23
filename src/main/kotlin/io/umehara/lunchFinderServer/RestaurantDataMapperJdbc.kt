@@ -3,6 +3,7 @@ package io.umehara.lunchFinderServer
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Repository
+import java.sql.ResultSet
 
 @Repository
 class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMapper {
@@ -10,7 +11,16 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         val sql = "SELECT * FROM restaurants"
         return jdbcTemplate.query(
                 sql,
-                { rs, _ -> RestaurantModel(rs.getLong("id"), rs.getString("name")) }
+                { rs, _ -> restaurantRowMapper(rs) }
+        )
+    }
+
+    override fun get(id: Long): RestaurantModel {
+        val sql = "SELECT * FROM restaurants WHERE id=" + id.toString()
+
+        return jdbcTemplate.queryForObject(
+                sql,
+                { rs, _ -> restaurantRowMapper(rs) }
         )
     }
 
@@ -22,5 +32,9 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         val parameterSource = mutableMapOf("name" to restaurantModelNew.name)
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
+    }
+
+    private fun restaurantRowMapper(rs: ResultSet): RestaurantModel {
+        return RestaurantModel(rs.getLong("id"), rs.getString("name"))
     }
 }

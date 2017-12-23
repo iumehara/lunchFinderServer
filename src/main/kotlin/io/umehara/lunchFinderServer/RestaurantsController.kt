@@ -9,7 +9,10 @@ class RestaurantsController (val repo: RestaurantRepo) {
     @GetMapping
     fun index() = repo.all()
 
+    @GetMapping("{id}")
+    fun show(@PathVariable id: Long) = repo.get(id)
+
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@RequestBody  restaurantModelNew: RestaurantModelNew) = repo.create(restaurantModelNew)
+    fun create(@RequestBody restaurantModelNew: RestaurantModelNew) = repo.create(restaurantModelNew)
 }

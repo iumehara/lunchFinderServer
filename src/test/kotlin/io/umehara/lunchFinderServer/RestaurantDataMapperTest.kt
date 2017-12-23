@@ -15,23 +15,22 @@ abstract class RestaurantDataMapperTest {
     }
 
     @Test
-    fun getReturnsEmptyList() {
+    fun allReturnsEmptyList() {
         val restaurants = restaurantDataMapper.all()
         assertThat(restaurants.size, equalTo(0))
     }
 
     @Test
-    fun createAddsOneRestaurant() {
+    fun createAndGetOneRestaurant() {
         val restaurantModelNew = RestaurantModelNew("Momodori")
         restaurantDataMapper.create(restaurantModelNew)
 
-        val restaurants = restaurantDataMapper.all()
-        assertThat(restaurants.size, equalTo(1))
-        assertThat(restaurants[0], equalTo(RestaurantModel(1, "Momodori")))
+        val restaurant = restaurantDataMapper.get(1L)
+        assertThat(restaurant, equalTo(RestaurantModel(1, "Momodori")))
     }
 
     @Test
-    fun createAddsMultipleRestaurants() {
+    fun createAndGetMultipleRestaurants() {
         val restaurant1 = RestaurantModelNew("Momodori")
         restaurantDataMapper.create(restaurant1)
         val restaurant2 = RestaurantModelNew("Pintokona")
