@@ -1,24 +1,39 @@
 package io.umehara.lunchFinderServer
 
-import org.hamcrest.MatcherAssert
-import org.hamcrest.core.IsEqual
-import org.junit.Test
 import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.jdbc.core.JdbcTemplate
 
-class RestaurantDataMapperJdbcTest {
-    @Test
-    fun all_returnsRestaurants() {
+class RestaurantDataMapperJdbcTest: RestaurantDataMapperTest() {
+    override fun setupRestaurantDataMapper(seedRestaurants: List<RestaurantModel>): RestaurantDataMapper {
+        val jdbcTemplate = initializeJdbcTemplate()
+        insertSeedData(seedRestaurants, jdbcTemplate)
+
+        return RestaurantDataMapperJdbc(jdbcTemplate)
+    }
+
+    private fun initializeJdbcTemplate(): JdbcTemplate {
         val dataSource = PGSimpleDataSource()
         dataSource.url = "jdbc:postgresql://localhost/lunch_finder_test"
         val jdbcTemplate = JdbcTemplate(dataSource)
-        val restaurantDataMapperJdbc = RestaurantDataMapperJdbc(jdbcTemplate)
+        jdbcTemplate.update("TRUNCATE restaurants RESTART IDENTITY")
+        return jdbcTemplate
+    }
 
+    private fun insertSeedData(seedRestaurants: List<RestaurantModel>, jdbcTemplate: JdbcTemplate) {
+        if (seedRestaurants.isEmpty()) {
+            return
+        }
 
-        val restaurants = restaurantDataMapperJdbc.all()
+        var sql = "INSERT INTO restaurants (name) VALUES "
 
+        seedRestaurants.forEachIndexed { index, restaurant ->
+            var additionalRestaurantString = "('$restaurant.name')"
+            if (index != seedRestaurants.size - 1) {
+                additionalRestaurantString += ", "
+            }
+            sql += additionalRestaurantString
+        }
 
-        val expectedRestaurants = listOf(Restaurant(1, "Pintokona"), Restaurant(2, "Momodori"))
-        MatcherAssert.assertThat(restaurants, IsEqual.equalTo(expectedRestaurants))
+        jdbcTemplate.execute(sql)
     }
 }

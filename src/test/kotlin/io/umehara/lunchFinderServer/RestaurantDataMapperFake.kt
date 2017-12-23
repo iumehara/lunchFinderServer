@@ -1,12 +1,20 @@
 package io.umehara.lunchFinderServer
 
 class RestaurantDataMapperFake: RestaurantDataMapper {
-    private val restaurants = listOf(
-            Restaurant(1, "Pintokona"),
-            Restaurant(2, "Momodori")
-    )
+    private var restaurants = mutableListOf<RestaurantModel>()
 
-    override fun all(): List<Restaurant> {
+    fun setSeedRestaurants(seedRestaurants: List<RestaurantModel>) {
+        restaurants.addAll(seedRestaurants)
+    }
+
+    override fun all(): List<RestaurantModel> {
         return restaurants
+    }
+
+    override fun create(restaurantModelNew: RestaurantModelNew): Long {
+        val id = restaurants.size + 1L
+        val newRestaurant = RestaurantModel(id, restaurantModelNew.name)
+        restaurants.add(newRestaurant)
+        return id
     }
 }
