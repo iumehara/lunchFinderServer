@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 data class RestaurantModel(
         var id: Long = 0,

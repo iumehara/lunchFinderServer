@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 interface RestaurantRepo {
     fun all(): List<RestaurantModel>

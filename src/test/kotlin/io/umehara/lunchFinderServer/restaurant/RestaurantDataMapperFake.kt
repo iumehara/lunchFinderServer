@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 class RestaurantDataMapperFake: RestaurantDataMapper {
     private var restaurants = mutableListOf<RestaurantModel>()

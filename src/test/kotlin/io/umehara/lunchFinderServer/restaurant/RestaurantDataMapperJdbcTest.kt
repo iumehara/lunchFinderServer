@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.jdbc.core.JdbcTemplate

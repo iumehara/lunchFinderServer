@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.*

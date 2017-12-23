@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert

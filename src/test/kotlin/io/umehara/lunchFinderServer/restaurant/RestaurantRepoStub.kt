@@ -1,4 +1,4 @@
-package io.umehara.lunchFinderServer
+package io.umehara.lunchFinderServer.restaurant
 
 class RestaurantRepoStub : RestaurantRepo {
     override fun all(): List<RestaurantModel> {
@@ -7,6 +7,7 @@ class RestaurantRepoStub : RestaurantRepo {
                 RestaurantModel(2, "Momodori")
         )
     }
+
     override fun get(id: Long): RestaurantModel {
         return RestaurantModel(1, "Pintokona")
     }
