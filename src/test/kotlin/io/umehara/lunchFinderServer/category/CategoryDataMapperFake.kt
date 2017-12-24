@@ -11,6 +11,10 @@ class CategoryDataMapperFake: CategoryDataMapper {
         return categories
     }
 
+    override fun where(ids: List<Long>): List<CategoryModel> {
+        return categories.filter { ids.contains(it.id) }
+    }
+
     override fun get(id: Long): CategoryModel {
         val filteredCategories = categories.filter { it.id == id }
         return filteredCategories[0]
