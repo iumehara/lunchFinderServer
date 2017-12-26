@@ -4,9 +4,9 @@ import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.jdbc.core.JdbcTemplate
 
 class RestaurantDataMapperJdbcTest: RestaurantDataMapperTest() {
-    override fun setupRestaurantDataMapper(seedRestaurants: List<RestaurantModel>): RestaurantDataMapper {
+    override fun setupRestaurantDataMapper(seedRestaurantDBS: List<RestaurantModelDB>): RestaurantDataMapper {
         val jdbcTemplate = initializeJdbcTemplate()
-        insertSeedData(seedRestaurants, jdbcTemplate)
+        insertSeedData(seedRestaurantDBS, jdbcTemplate)
 
         return RestaurantDataMapperJdbc(jdbcTemplate)
     }
@@ -19,16 +19,16 @@ class RestaurantDataMapperJdbcTest: RestaurantDataMapperTest() {
         return jdbcTemplate
     }
 
-    private fun insertSeedData(seedRestaurants: List<RestaurantModel>, jdbcTemplate: JdbcTemplate) {
-        if (seedRestaurants.isEmpty()) {
+    private fun insertSeedData(seedRestaurantDBS: List<RestaurantModelDB>, jdbcTemplate: JdbcTemplate) {
+        if (seedRestaurantDBS.isEmpty()) {
             return
         }
 
         var sql = "INSERT INTO restaurants (name) VALUES "
 
-        seedRestaurants.forEachIndexed { index, restaurant ->
+        seedRestaurantDBS.forEachIndexed { index, restaurant ->
             var additionalRestaurantString = "('$restaurant.name')"
-            if (index != seedRestaurants.size - 1) {
+            if (index != seedRestaurantDBS.size - 1) {
                 additionalRestaurantString += ", "
             }
             sql += additionalRestaurantString

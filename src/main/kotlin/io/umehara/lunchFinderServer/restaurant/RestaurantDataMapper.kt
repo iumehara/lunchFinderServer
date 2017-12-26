@@ -1,7 +1,7 @@
 package io.umehara.lunchFinderServer.restaurant
 
 interface RestaurantDataMapper {
-    fun all(): List<RestaurantModel>
-    fun get(id: Long): RestaurantModel
+    fun all(): List<RestaurantModelDB>
+    fun get(id: Long): RestaurantModelDB
     fun create(restaurantModelNew: RestaurantModelNew): Long
 }

@@ -7,7 +7,7 @@ import org.junit.Test
 
 abstract class RestaurantDataMapperTest {
     private lateinit var restaurantDataMapper: RestaurantDataMapper
-    abstract fun setupRestaurantDataMapper(seedRestaurants: List<RestaurantModel>): RestaurantDataMapper
+    abstract fun setupRestaurantDataMapper(seedRestaurantDBS: List<RestaurantModelDB>): RestaurantDataMapper
 
     @Before
     fun setUp() {
@@ -22,23 +22,23 @@ abstract class RestaurantDataMapperTest {
 
     @Test
     fun createAndGetOneRestaurant() {
-        val restaurantModelNew = RestaurantModelNew("Momodori")
+        val restaurantModelNew = RestaurantModelNew("Momodori", listOf(1L, 5L))
         restaurantDataMapper.create(restaurantModelNew)
 
         val restaurant = restaurantDataMapper.get(1L)
-        assertThat(restaurant, equalTo(RestaurantModel(1, "Momodori")))
+        assertThat(restaurant, equalTo(RestaurantModelDB(1, "Momodori", listOf(1L, 5L))))
     }
 
     @Test
     fun createAndGetMultipleRestaurants() {
-        val restaurant1 = RestaurantModelNew("Momodori")
+        val restaurant1 = RestaurantModelNew("Momodori", listOf(1L))
         restaurantDataMapper.create(restaurant1)
-        val restaurant2 = RestaurantModelNew("Pintokona")
+        val restaurant2 = RestaurantModelNew("Pintokona", listOf(2L))
         restaurantDataMapper.create(restaurant2)
 
         val restaurants = restaurantDataMapper.all()
         assertThat(restaurants.size, equalTo(2))
-        assertThat(restaurants[0], equalTo(RestaurantModel(1, "Momodori")))
-        assertThat(restaurants[1], equalTo(RestaurantModel(2, "Pintokona")))
+        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Momodori", listOf(1L))))
+        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Pintokona", listOf(2L))))
     }
 }

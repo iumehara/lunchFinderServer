@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("restaurants")
 class RestaurantsController (val repo: RestaurantRepo) {
     @GetMapping
-    fun index() = repo.all()
+    fun index(): List<RestaurantModelDB> = repo.all()
 
     @GetMapping("{id}")
-    fun show(@PathVariable id: Long) = repo.get(id)
+    fun show(@PathVariable id: Long): RestaurantModel = repo.get(id)
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@RequestBody restaurantModelNew: RestaurantModelNew) = repo.create(restaurantModelNew)
+    fun create(@RequestBody restaurantModelNew: RestaurantModelNew): Long = repo.create(restaurantModelNew)
 }

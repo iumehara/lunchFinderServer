@@ -1,9 +1,9 @@
 package io.umehara.lunchFinderServer.restaurant
 
 class RestaurantDataMapperFakeTest: RestaurantDataMapperTest() {
-    override fun setupRestaurantDataMapper(seedRestaurants: List<RestaurantModel>): RestaurantDataMapper {
+    override fun setupRestaurantDataMapper(seedRestaurantDBS: List<RestaurantModelDB>): RestaurantDataMapper {
         val restaurantDataMapperFake = RestaurantDataMapperFake()
-        restaurantDataMapperFake.setSeedRestaurants(seedRestaurants)
+        restaurantDataMapperFake.setSeedRestaurants(seedRestaurantDBS)
         return restaurantDataMapperFake
     }
 }

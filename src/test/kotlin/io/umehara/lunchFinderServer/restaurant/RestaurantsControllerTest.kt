@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 @RunWith(SpringRunner::class)
@@ -46,7 +45,7 @@ class RestaurantsControllerTest {
 
 
         //language=json
-        val expectedJSON = "{\"id\": 1, \"name\": \"Pintokona\"}\n"
+        val expectedJSON = "{\"id\": 1, \"name\": \"Pintokona\", \"categories\": [{\"id\": 1, \"name\": \"Sushi\"}]}\n"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))
@@ -55,7 +54,7 @@ class RestaurantsControllerTest {
     @Test
     fun createCallsRepoWithCorrectArguments() {
         //language=json
-        val requestBody = "{\n  \"name\": \"Green Asia\"\n}"
+        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"categoryIds\": [1]\n}"
 
         val request = mockController.perform(post("/restaurants")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -63,6 +62,6 @@ class RestaurantsControllerTest {
 
 
         request.andExpect(status().isCreated)
-        assertThat(repo.createArgument, equalTo(RestaurantModelNew("Green Asia")))
+        assertThat(repo.createArgument, equalTo(RestaurantModelNew("Green Asia", listOf(1L))))
     }
 }
