@@ -67,4 +67,20 @@ abstract class CategoryDataMapperTest {
         assertThat(categories[0], equalTo(CategoryModel(1, "Curry")))
         assertThat(categories[1], equalTo(CategoryModel(3, "Spicy")))
     }
+
+    @Test
+    fun destroyRemovesCategory() {
+        val category1 = CategoryModelNew("Curry")
+        categoryDataMapper.create(category1)
+        val category2 = CategoryModelNew("Sushi")
+        categoryDataMapper.create(category2)
+
+
+        categoryDataMapper.destroy(2L)
+
+
+        val categories = categoryDataMapper.all()
+        assertThat(categories.size, equalTo(1))
+        assertThat(categories[0], equalTo(CategoryModel(1, "Curry")))
+    }
 }

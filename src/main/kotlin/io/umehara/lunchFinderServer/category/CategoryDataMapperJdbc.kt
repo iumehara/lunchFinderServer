@@ -30,11 +30,12 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
     }
 
     override fun get(id: Long): CategoryModel {
-        val sql = "SELECT * FROM categories WHERE id=" + id.toString()
+        val sql = "SELECT * FROM categories WHERE id=?"
 
         return jdbcTemplate.queryForObject(
                 sql,
-                { rs, _ -> categoryRowMapper(rs) }
+                { rs, _ -> categoryRowMapper(rs) },
+                arrayOf(id)
         )
     }
 
@@ -46,6 +47,11 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         val parameterSource = mutableMapOf("name" to categoryModelNew.name)
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
+    }
+
+    override fun destroy(id: Long) {
+        val sql = "DELETE FROM categories WHERE id=?"
+        jdbcTemplate.update(sql, id)
     }
 
     private fun categoryRowMapper(rs: ResultSet): CategoryModel {

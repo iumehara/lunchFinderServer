@@ -21,4 +21,9 @@ class CategoriesController(val repo: CategoryRepo) {
     fun create(@RequestBody categoryModelNew: CategoryModelNew): Long {
         return repo.create(categoryModelNew)
     }
+
+    @DeleteMapping("{id}")
+    fun destroy(@PathVariable id: Long) {
+        repo.destroy(id)
+    }
 }

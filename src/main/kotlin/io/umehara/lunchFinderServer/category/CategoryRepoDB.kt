@@ -15,4 +15,8 @@ class CategoryRepoDB(val categoryDataMapper: CategoryDataMapper): CategoryRepo {
     override fun create(categoryModelNew: CategoryModelNew): Long {
         return categoryDataMapper.create(categoryModelNew)
     }
+
+    override fun destroy(id: Long) {
+        categoryDataMapper.destroy(id)
+    }
 }

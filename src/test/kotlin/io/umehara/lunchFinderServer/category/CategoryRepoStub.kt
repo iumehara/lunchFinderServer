@@ -15,6 +15,11 @@ class CategoryRepoStub: CategoryRepo {
     var createArgument: CategoryModelNew? = null
     override fun create(categoryModelNew: CategoryModelNew): Long {
         createArgument = categoryModelNew
-        return 0L
+        return 1L
+    }
+
+    var destroyArgument: Long? = null
+    override fun destroy(id: Long) {
+        destroyArgument = id
     }
 }

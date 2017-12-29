@@ -5,4 +5,5 @@ interface CategoryDataMapper {
     fun where(ids: List<Long>): List<CategoryModel>
     fun get(id: Long): CategoryModel
     fun create(categoryModelNew: CategoryModelNew): Long
+    fun destroy(id: Long)
 }

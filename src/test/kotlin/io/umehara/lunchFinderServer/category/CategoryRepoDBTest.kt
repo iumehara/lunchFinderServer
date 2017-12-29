@@ -1,7 +1,7 @@
 package io.umehara.lunchFinderServer.category
 
-import org.hamcrest.MatcherAssert
-import org.hamcrest.core.IsEqual
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.*
 import org.junit.Before
 import org.junit.Test
 
@@ -26,7 +26,7 @@ class CategoryRepoDBTest {
         val categories= categoryRepoDB.all()
 
 
-        MatcherAssert.assertThat(categories, IsEqual.equalTo(seedCategories))
+        assertThat(categories, equalTo(seedCategories))
     }
 
     @Test
@@ -38,7 +38,7 @@ class CategoryRepoDBTest {
         val restaurant = categoryRepoDB.get(1L)
 
 
-        MatcherAssert.assertThat(restaurant, IsEqual.equalTo(seedCategory))
+        assertThat(restaurant, equalTo(seedCategory))
     }
 
     @Test
@@ -50,5 +50,18 @@ class CategoryRepoDBTest {
         val categories= categoryRepoDB.all()
 
 
-        MatcherAssert.assertThat(categories[0], IsEqual.equalTo(CategoryModel(createdCategoryId, "Green Asia")))
-    }}
+        assertThat(categories[0], equalTo(CategoryModel(createdCategoryId, "Green Asia")))
+    }
+
+    @Test(expected = Exception::class)
+    fun destroyDeletesExistingCategoryById() {
+        val seedCategory = CategoryModel(1L, "Pintokona")
+        fakeCategoryDataMapper.setSeedCategories(listOf(seedCategory))
+
+
+        categoryRepoDB.destroy(1L)
+
+
+        categoryRepoDB.get(1L)
+    }
+}

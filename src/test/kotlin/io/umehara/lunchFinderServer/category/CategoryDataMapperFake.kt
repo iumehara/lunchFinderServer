@@ -25,4 +25,8 @@ class CategoryDataMapperFake: CategoryDataMapper {
         categories.add(CategoryModel(id, categoryModelNew.name))
         return id
     }
+
+    override fun destroy(id: Long) {
+        categories = categories.filter { it.id != id }.toMutableList()
+    }
 }
