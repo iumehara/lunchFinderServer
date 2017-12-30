@@ -60,4 +60,18 @@ class RestaurantRepoDBTest {
 
         assertThat(restaurants[0], equalTo(RestaurantModelDB(createdRestaurantId, "Green Asia", listOf(1L))))
     }
+
+    @Test
+    fun updateUpdatesExistingRestaurant() {
+        val restaurantModelNew = RestaurantModelNew("Green Asia", listOf(1L))
+        val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)
+        val editedRestaurantModelNew = RestaurantModelNew("Blue Asia", listOf(2L))
+
+
+        restaurantRepoDB.update(createdRestaurantId, editedRestaurantModelNew)
+
+
+        val restaurants = restaurantRepoDB.all()
+        assertThat(restaurants[0], equalTo(RestaurantModelDB(createdRestaurantId, "Blue Asia", listOf(2L))))
+    }
 }

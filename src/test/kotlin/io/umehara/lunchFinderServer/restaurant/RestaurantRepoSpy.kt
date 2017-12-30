@@ -2,7 +2,7 @@ package io.umehara.lunchFinderServer.restaurant
 
 import io.umehara.lunchFinderServer.category.CategoryModel
 
-class RestaurantRepoStub : RestaurantRepo {
+class RestaurantRepoSpy : RestaurantRepo {
     override fun all(): List<RestaurantModelDB> {
         return listOf(
                 RestaurantModelDB(1, "Pintokona", listOf(1L)),
@@ -18,5 +18,12 @@ class RestaurantRepoStub : RestaurantRepo {
     override fun create(restaurantModelNew: RestaurantModelNew): Long {
         createArgument = restaurantModelNew
         return 0L
+    }
+
+    var updateArgumentRestaurantModelNew: RestaurantModelNew? = null
+    var updateArgumentId: Long? = null
+    override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
+        updateArgumentId = id
+        updateArgumentRestaurantModelNew = restaurantModelNew
     }
 }

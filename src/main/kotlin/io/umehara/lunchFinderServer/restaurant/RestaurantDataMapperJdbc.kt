@@ -2,6 +2,7 @@ package io.umehara.lunchFinderServer.restaurant
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
@@ -39,6 +40,25 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
     }
 
+    override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
+        val sql = "UPDATE restaurants " +
+                "SET name=:name, " +
+                "category_ids=:category_ids " +
+                "WHERE id=:id"
+
+        val parameterSource = MapSqlParameterSource()
+        parameterSource.addValue("name", restaurantModelNew.name)
+        parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
+        parameterSource.addValue("id", id)
+
+        val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
+
+        namedParameterJdbcTemplate.update(
+                sql,
+                parameterSource
+        )
+    }
+
     private fun restaurantRowMapper(rs: ResultSet): RestaurantModelDB {
         return RestaurantModelDB(
                 rs.getLong("id"),
@@ -53,7 +73,8 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
     }
 
     private fun sqlArrayToKotlinList(sqlArray: java.sql.Array): List<Long> {
-        val kotlinArray =  sqlArray.getArray() as Array<Long>
-        return asList(*kotlinArray)
+        val kotlinArray =  sqlArray.array as Array<*>
+        val kotlinList = asList(*kotlinArray)
+        return kotlinList.filterIsInstance<Long>()
     }
 }

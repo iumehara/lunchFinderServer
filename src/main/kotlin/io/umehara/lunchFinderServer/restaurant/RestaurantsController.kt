@@ -15,4 +15,10 @@ class RestaurantsController (val repo: RestaurantRepo) {
     @PostMapping
     @ResponseStatus(CREATED)
     fun create(@RequestBody restaurantModelNew: RestaurantModelNew): Long = repo.create(restaurantModelNew)
+
+    @PutMapping("{id}")
+    fun update(
+            @PathVariable id: Long,
+            @RequestBody restaurantModelNew: RestaurantModelNew
+    ) = repo.update(id, restaurantModelNew)
 }

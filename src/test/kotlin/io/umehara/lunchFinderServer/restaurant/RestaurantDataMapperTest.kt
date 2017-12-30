@@ -41,4 +41,20 @@ abstract class RestaurantDataMapperTest {
         assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Momodori", listOf(1L))))
         assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Pintokona", listOf(2L))))
     }
+
+    @Test
+    fun createUpdateAndGetRestaurant() {
+        val newRestaurant = RestaurantModelNew("Momodori", listOf(1L))
+        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+
+        val editedRestaurant = RestaurantModelNew("百鳥", listOf(2L))
+        restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
+
+        val restaurant = restaurantDataMapper.get(createdRestaurantId)
+        assertThat(restaurant, equalTo(RestaurantModelDB(
+                createdRestaurantId,
+                "百鳥",
+                listOf(2L)
+        )))
+    }
 }

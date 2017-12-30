@@ -8,7 +8,6 @@ class RestaurantRepoDB(
         val restaurantDataMapper: RestaurantDataMapper,
         val categoryDataMapper: CategoryDataMapper
 ): RestaurantRepo {
-
     override fun all(): List<RestaurantModelDB> {
         return restaurantDataMapper.all()
     }
@@ -21,5 +20,9 @@ class RestaurantRepoDB(
 
     override fun create(restaurantModelNew: RestaurantModelNew): Long {
         return restaurantDataMapper.create(restaurantModelNew)
+    }
+
+    override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
+        restaurantDataMapper.update(id, restaurantModelNew)
     }
 }

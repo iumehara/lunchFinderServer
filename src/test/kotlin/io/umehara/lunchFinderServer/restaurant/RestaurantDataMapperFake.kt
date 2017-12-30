@@ -26,4 +26,15 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         restaurants.add(newRestaurant)
         return id
     }
+
+    override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
+        restaurants = restaurants
+                .map {
+                    if (it.id == id) {
+                        RestaurantModelDB(it.id, restaurantModelNew.name, restaurantModelNew.categoryIds)
+                    } else {
+                        it
+                    }
+                }.toMutableList()
+    }
 }
