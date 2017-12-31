@@ -19,6 +19,15 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         )
     }
 
+    override fun allByCategoryId(categoryId: Long): List<RestaurantModelDB> {
+        val sql = "SELECT * FROM restaurants WHERE ? = ANY (category_ids)"
+        return jdbcTemplate.query(
+                sql,
+                { rs, _ -> restaurantRowMapper(rs) },
+                arrayOf(categoryId)
+        )
+    }
+
     override fun get(id: Long): RestaurantModelDB {
         val sql = "SELECT * FROM restaurants WHERE id=" + id.toString()
 

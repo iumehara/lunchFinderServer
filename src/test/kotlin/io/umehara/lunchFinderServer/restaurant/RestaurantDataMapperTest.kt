@@ -21,6 +21,24 @@ abstract class RestaurantDataMapperTest {
     }
 
     @Test
+    fun allByCategoryIdReturnsRestaurants() {
+        val restaurant1 = RestaurantModelNew("Momodori", listOf(1L))
+        restaurantDataMapper.create(restaurant1)
+        val restaurant2 = RestaurantModelNew("Pintokona", listOf(2L))
+        restaurantDataMapper.create(restaurant2)
+        val restaurant3 = RestaurantModelNew("Green Asia", listOf(1L, 2L))
+        restaurantDataMapper.create(restaurant3)
+
+
+        val restaurants = restaurantDataMapper.allByCategoryId(2L)
+
+
+        assertThat(restaurants.size, equalTo(2))
+        assertThat(restaurants[0].name, equalTo("Pintokona"))
+        assertThat(restaurants[1].name, equalTo("Green Asia"))
+    }
+
+    @Test
     fun createAndGetOneRestaurant() {
         val restaurantModelNew = RestaurantModelNew("Momodori", listOf(1L, 5L))
         restaurantDataMapper.create(restaurantModelNew)

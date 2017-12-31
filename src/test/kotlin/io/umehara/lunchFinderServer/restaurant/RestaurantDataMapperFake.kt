@@ -11,6 +11,10 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         return restaurants
     }
 
+    override fun allByCategoryId(categoryId: Long): List<RestaurantModelDB> {
+        return restaurants.filter { it.categoryIds.contains(categoryId) }.toMutableList()
+    }
+
     override fun get(id: Long): RestaurantModelDB {
         val filteredRestaurants = restaurants.filter { it.id == id }
         return filteredRestaurants[0]
