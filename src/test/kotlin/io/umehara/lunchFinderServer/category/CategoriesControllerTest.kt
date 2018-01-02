@@ -19,12 +19,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetu
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class CategoriesControllerTest {
-    private lateinit var repo: CategoryRepoStub
+    private lateinit var repo: CategoryRepoSpy
     private lateinit var mockController: MockMvc
 
     @Before
     fun setUp() {
-        repo = CategoryRepoStub()
+        repo = CategoryRepoSpy()
         val categoriesController = CategoriesController(repo)
         mockController = standaloneSetup(categoriesController).build()
     }
@@ -47,7 +47,7 @@ class CategoriesControllerTest {
 
 
         //language=json
-        val expectedJSON = "{\"id\": 1, \"name\": \"Curry\"}"
+        val expectedJSON = "{\"id\": 1, \"name\": \"Curry\", \"restaurants\": [{\"id\": 1, \"name\": \"Green Asia\"}]}"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))

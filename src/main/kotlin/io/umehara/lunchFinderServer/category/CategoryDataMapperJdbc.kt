@@ -9,7 +9,7 @@ import java.sql.ResultSet
 
 @Repository
 class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper {
-    override fun all(): List<CategoryModel> {
+    override fun all(): List<CategoryModelDB> {
         val sql = "SELECT * FROM categories"
         return jdbcTemplate.query(
                 sql,
@@ -17,7 +17,7 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         )
     }
 
-    override fun where(ids: List<Long>): List<CategoryModel> {
+    override fun where(ids: List<Long>): List<CategoryModelDB> {
         val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
         val sql = "SELECT * FROM categories WHERE id in (:ids)"
         val paramSource = MapSqlParameterSource().addValue("ids", ids)
@@ -29,7 +29,7 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         )
     }
 
-    override fun get(id: Long): CategoryModel {
+    override fun get(id: Long): CategoryModelDB {
         val sql = "SELECT * FROM categories WHERE id=?"
 
         return jdbcTemplate.queryForObject(
@@ -54,7 +54,7 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         jdbcTemplate.update(sql, id)
     }
 
-    private fun categoryRowMapper(rs: ResultSet): CategoryModel {
-        return CategoryModel(rs.getLong("id"), rs.getString("name"))
+    private fun categoryRowMapper(rs: ResultSet): CategoryModelDB {
+        return CategoryModelDB(rs.getLong("id"), rs.getString("name"))
     }
 }

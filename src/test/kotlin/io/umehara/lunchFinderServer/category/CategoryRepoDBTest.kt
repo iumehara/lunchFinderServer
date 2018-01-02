@@ -1,5 +1,7 @@
 package io.umehara.lunchFinderServer.category
 
+import io.umehara.lunchFinderServer.restaurant.RestaurantDataMapperFake
+import io.umehara.lunchFinderServer.restaurant.RestaurantModelDB
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.*
 import org.junit.Before
@@ -8,17 +10,18 @@ import org.junit.Test
 class CategoryRepoDBTest {
     private lateinit var categoryRepoDB: CategoryRepoDB
     private var fakeCategoryDataMapper: CategoryDataMapperFake = CategoryDataMapperFake()
+    private var fakeRestaurantDataMapper: RestaurantDataMapperFake = RestaurantDataMapperFake()
 
     @Before
     fun setUp() {
-        categoryRepoDB = CategoryRepoDB(fakeCategoryDataMapper)
+        categoryRepoDB = CategoryRepoDB(fakeCategoryDataMapper, fakeRestaurantDataMapper)
     }
 
     @Test
     fun allReturnsCategories() {
         val seedCategories= listOf(
-                CategoryModel(1L, "Pintokona"),
-                CategoryModel(2L, "Momodori")
+                CategoryModelDB(1L, "Pintokona"),
+                CategoryModelDB(2L, "Momodori")
         )
         fakeCategoryDataMapper.setSeedCategories(seedCategories)
 
@@ -31,14 +34,18 @@ class CategoryRepoDBTest {
 
     @Test
     fun getReturnsCategory() {
-        val seedCategory = CategoryModel(1L, "Pintokona")
+        val seedCategory = CategoryModelDB(1L, "Sushi")
         fakeCategoryDataMapper.setSeedCategories(listOf(seedCategory))
 
+        val seedRestaurant = RestaurantModelDB(1L, "Pintokona", listOf(1L))
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
 
-        val restaurant = categoryRepoDB.get(1L)
+
+        val category = categoryRepoDB.get(1L)
 
 
-        assertThat(restaurant, equalTo(seedCategory))
+        val expectedCategory = CategoryModel(1L, "Sushi", listOf(seedRestaurant))
+        assertThat(category, equalTo(expectedCategory))
     }
 
     @Test
@@ -50,12 +57,12 @@ class CategoryRepoDBTest {
         val categories= categoryRepoDB.all()
 
 
-        assertThat(categories[0], equalTo(CategoryModel(createdCategoryId, "Green Asia")))
+        assertThat(categories[0], equalTo(CategoryModelDB(createdCategoryId, "Green Asia")))
     }
 
     @Test(expected = Exception::class)
     fun destroyDeletesExistingCategoryById() {
-        val seedCategory = CategoryModel(1L, "Pintokona")
+        val seedCategory = CategoryModelDB(1L, "Pintokona")
         fakeCategoryDataMapper.setSeedCategories(listOf(seedCategory))
 
 

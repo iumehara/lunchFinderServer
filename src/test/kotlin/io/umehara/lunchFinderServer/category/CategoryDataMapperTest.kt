@@ -7,7 +7,7 @@ import org.junit.Test
 
 abstract class CategoryDataMapperTest {
     private lateinit var categoryDataMapper: CategoryDataMapper
-    abstract fun setupCategoryDataMapper(seedCategories: List<CategoryModel>): CategoryDataMapper
+    abstract fun setupCategoryDataMapper(seedCategories: List<CategoryModelDB>): CategoryDataMapper
 
     @Before
     fun setUp() {
@@ -31,7 +31,7 @@ abstract class CategoryDataMapperTest {
         val category = categoryDataMapper.get(1L)
 
 
-        assertThat(category, equalTo(CategoryModel(1, "Curry")))
+        assertThat(category, equalTo(CategoryModelDB(1, "Curry")))
     }
 
     @Test
@@ -46,8 +46,8 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(2))
-        assertThat(categories[0], equalTo(CategoryModel(1, "Curry")))
-        assertThat(categories[1], equalTo(CategoryModel(2, "Sushi")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
+        assertThat(categories[1], equalTo(CategoryModelDB(2, "Sushi")))
     }
 
     @Test
@@ -64,8 +64,8 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(2))
-        assertThat(categories[0], equalTo(CategoryModel(1, "Curry")))
-        assertThat(categories[1], equalTo(CategoryModel(3, "Spicy")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
+        assertThat(categories[1], equalTo(CategoryModelDB(3, "Spicy")))
     }
 
     @Test
@@ -81,6 +81,6 @@ abstract class CategoryDataMapperTest {
 
         val categories = categoryDataMapper.all()
         assertThat(categories.size, equalTo(1))
-        assertThat(categories[0], equalTo(CategoryModel(1, "Curry")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
     }
 }

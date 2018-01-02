@@ -1,7 +1,7 @@
 package io.umehara.lunchFinderServer.restaurant
 
 import io.umehara.lunchFinderServer.category.CategoryDataMapperFake
-import io.umehara.lunchFinderServer.category.CategoryModel
+import io.umehara.lunchFinderServer.category.CategoryModelDB
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
@@ -37,12 +37,12 @@ class RestaurantRepoDBTest {
         val seedRestaurant = RestaurantModelDB(1L, "Pintokona", listOf(5L))
         fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
 
-        val seedCategories = listOf(CategoryModel(5L, "Sushi"))
+        val seedCategories = listOf(CategoryModelDB(5L, "Sushi"))
         fakeCategoryDataMapper.setSeedCategories(seedCategories)
 
 
         val restaurant = restaurantRepoDB.get(1L)
-        val expectedRestaurant = RestaurantModel(1L, "Pintokona", listOf(CategoryModel(5L, "Sushi")))
+        val expectedRestaurant = RestaurantModel(1L, "Pintokona", listOf(CategoryModelDB(5L, "Sushi")))
 
 
 

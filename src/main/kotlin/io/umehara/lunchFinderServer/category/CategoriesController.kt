@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("categories")
 class CategoriesController(val repo: CategoryRepo) {
     @GetMapping
-    fun index(): List<CategoryModel> {
+    fun index(): List<CategoryModelDB> {
         return repo.all()
     }
 

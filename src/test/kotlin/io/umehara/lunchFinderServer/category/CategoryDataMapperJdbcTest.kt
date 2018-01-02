@@ -4,7 +4,7 @@ import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.jdbc.core.JdbcTemplate
 
 class CategoryDataMapperJdbcTest: CategoryDataMapperTest() {
-    override fun setupCategoryDataMapper(seedCategories: List<CategoryModel>): CategoryDataMapper {
+    override fun setupCategoryDataMapper(seedCategories: List<CategoryModelDB>): CategoryDataMapper {
         val jdbcTemplate = initializeJdbcTemplate()
         insertSeedData(seedCategories, jdbcTemplate)
 
@@ -19,7 +19,7 @@ class CategoryDataMapperJdbcTest: CategoryDataMapperTest() {
         return jdbcTemplate
     }
 
-    private fun insertSeedData(seedCategories: List<CategoryModel>, jdbcTemplate: JdbcTemplate) {
+    private fun insertSeedData(seedCategories: List<CategoryModelDB>, jdbcTemplate: JdbcTemplate) {
         if (seedCategories.isEmpty()) {
             return
         }

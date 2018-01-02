@@ -1,28 +1,28 @@
 package io.umehara.lunchFinderServer.category
 
 class CategoryDataMapperFake: CategoryDataMapper {
-    private var categories = mutableListOf<CategoryModel>()
+    private var categories = mutableListOf<CategoryModelDB>()
 
-    fun setSeedCategories(seedCategories: List<CategoryModel>) {
+    fun setSeedCategories(seedCategories: List<CategoryModelDB>) {
         categories.addAll(seedCategories)
     }
 
-    override fun all(): List<CategoryModel> {
+    override fun all(): List<CategoryModelDB> {
         return categories
     }
 
-    override fun where(ids: List<Long>): List<CategoryModel> {
+    override fun where(ids: List<Long>): List<CategoryModelDB> {
         return categories.filter { ids.contains(it.id) }
     }
 
-    override fun get(id: Long): CategoryModel {
+    override fun get(id: Long): CategoryModelDB {
         val filteredCategories = categories.filter { it.id == id }
         return filteredCategories[0]
     }
 
     override fun create(categoryModelNew: CategoryModelNew): Long {
         val id = categories.size + 1L
-        categories.add(CategoryModel(id, categoryModelNew.name))
+        categories.add(CategoryModelDB(id, categoryModelNew.name))
         return id
     }
 
