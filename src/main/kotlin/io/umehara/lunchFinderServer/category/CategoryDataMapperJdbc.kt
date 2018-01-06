@@ -18,6 +18,10 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
     }
 
     override fun where(ids: List<Long>): List<CategoryModelDB> {
+        if (ids.isEmpty()) {
+            return emptyList()
+        }
+
         val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
         val sql = "SELECT * FROM categories WHERE id in (:ids)"
         val paramSource = MapSqlParameterSource().addValue("ids", ids)

@@ -69,6 +69,14 @@ abstract class CategoryDataMapperTest {
     }
 
     @Test
+    fun whereWithNoCategoriesReturnsEmptyList() {
+        val categories = categoryDataMapper.where(emptyList())
+
+
+        assertThat(categories.size, equalTo(0))
+    }
+
+    @Test
     fun destroyRemovesCategory() {
         val category1 = CategoryModelNew("Curry")
         categoryDataMapper.create(category1)
