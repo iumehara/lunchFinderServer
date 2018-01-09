@@ -1,6 +1,7 @@
 package io.umehara.lunchFinderServer.category
 
 import io.umehara.lunchFinderServer.restaurant.RestaurantDataMapperFake
+import io.umehara.lunchFinderServer.restaurant.RestaurantModel
 import io.umehara.lunchFinderServer.restaurant.RestaurantModelDB
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.*
@@ -44,7 +45,7 @@ class CategoryRepoDBTest {
         val category = categoryRepoDB.get(1L)
 
 
-        val expectedCategory = CategoryModel(1L, "Sushi", listOf(seedRestaurant))
+        val expectedCategory = CategoryModel(1L, "Sushi", listOf(RestaurantModel(seedRestaurant.id, seedRestaurant.name, listOf(seedCategory))))
         assertThat(category, equalTo(expectedCategory))
     }
 
