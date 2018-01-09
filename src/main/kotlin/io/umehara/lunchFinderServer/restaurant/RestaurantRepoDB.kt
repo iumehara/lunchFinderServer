@@ -25,4 +25,8 @@ class RestaurantRepoDB(
     override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
         restaurantDataMapper.update(id, restaurantModelNew)
     }
+
+    override fun addCategory(id: Long, categoryId: Long) {
+        restaurantDataMapper.addCategory(id, categoryId)
+    }
 }

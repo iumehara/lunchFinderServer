@@ -5,4 +5,5 @@ interface RestaurantRepo {
     fun get(id: Long): RestaurantModel
     fun create(restaurantModelNew: RestaurantModelNew): Long
     fun update(id: Long, restaurantModelNew: RestaurantModelNew)
+    fun addCategory(id: Long, categoryId: Long)
 }

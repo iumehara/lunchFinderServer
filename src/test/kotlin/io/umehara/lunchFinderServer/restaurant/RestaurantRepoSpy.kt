@@ -26,4 +26,11 @@ class RestaurantRepoSpy : RestaurantRepo {
         updateArgumentId = id
         updateArgumentRestaurantModelNew = restaurantModelNew
     }
+
+    var addCategoryArgumentId: Long? = null
+    var addCategoryArgumentCategoryId: Long? = null
+    override fun addCategory(id: Long, categoryId: Long) {
+        addCategoryArgumentId = id
+        addCategoryArgumentCategoryId = categoryId
+    }
 }

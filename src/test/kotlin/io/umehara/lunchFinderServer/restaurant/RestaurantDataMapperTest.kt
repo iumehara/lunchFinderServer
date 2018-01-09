@@ -75,4 +75,19 @@ abstract class RestaurantDataMapperTest {
                 listOf(2L)
         )))
     }
+
+    @Test
+    fun createAddCategoryAndGetRestaurant() {
+        val newRestaurant = RestaurantModelNew("Momodori", listOf(1L))
+        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+
+        restaurantDataMapper.addCategory(createdRestaurantId, 5L)
+
+        val restaurant = restaurantDataMapper.get(createdRestaurantId)
+        assertThat(restaurant, equalTo(RestaurantModelDB(
+                createdRestaurantId,
+                "Momodori",
+                listOf(1L, 5L)
+        )))
+    }
 }

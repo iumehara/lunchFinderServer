@@ -2,7 +2,6 @@ package io.umehara.lunchFinderServer.restaurant
 
 class RestaurantDataMapperFake: RestaurantDataMapper {
     private var restaurants = mutableListOf<RestaurantModelDB>()
-
     fun setSeedRestaurants(seedRestaurantDBS: List<RestaurantModelDB>) {
         restaurants.addAll(seedRestaurantDBS)
     }
@@ -40,5 +39,15 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
                         it
                     }
                 }.toMutableList()
+    }
+
+    override fun addCategory(id: Long, categoryId: Long) {
+        val restaurant = get(id)
+        val categoryIds = restaurant.categoryIds.toMutableList()
+        categoryIds.add(categoryId)
+
+        val restaurantModelNew = RestaurantModelNew(restaurant.name, categoryIds)
+
+        update(id, restaurantModelNew)
     }
 }

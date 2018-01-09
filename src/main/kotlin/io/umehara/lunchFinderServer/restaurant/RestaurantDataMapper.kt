@@ -6,4 +6,5 @@ interface RestaurantDataMapper {
     fun get(id: Long): RestaurantModelDB
     fun create(restaurantModelNew: RestaurantModelNew): Long
     fun update(id: Long, restaurantModelNew: RestaurantModelNew)
+    fun addCategory(id: Long, categoryId: Long)
 }

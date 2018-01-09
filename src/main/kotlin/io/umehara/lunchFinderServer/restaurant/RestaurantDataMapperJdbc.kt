@@ -68,6 +68,23 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         )
     }
 
+    override fun addCategory(id: Long, categoryId: Long) {
+        val sql = "UPDATE restaurants " +
+                "SET category_ids=array_append(category_ids, :category_id) " +
+                "WHERE id=:id"
+
+        val parameterSource = MapSqlParameterSource()
+        parameterSource.addValue("category_id", categoryId)
+        parameterSource.addValue("id", id)
+
+        val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
+
+        namedParameterJdbcTemplate.update(
+                sql,
+                parameterSource
+        )
+    }
+
     private fun restaurantRowMapper(rs: ResultSet): RestaurantModelDB {
         return RestaurantModelDB(
                 rs.getLong("id"),

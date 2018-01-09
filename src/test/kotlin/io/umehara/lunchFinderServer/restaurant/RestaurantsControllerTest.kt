@@ -78,4 +78,15 @@ class RestaurantsControllerTest {
         assertThat(repo.updateArgumentId, equalTo(1L))
         assertThat(repo.updateArgumentRestaurantModelNew, equalTo(RestaurantModelNew("Green Asia", listOf(1L))))
     }
+
+    @Test
+    fun addCategoryCallsRepoWithCorrectArguments() {
+        val request = mockController.perform(put("/restaurants/25/categories/2")
+                .contentType(APPLICATION_JSON_UTF8))
+
+
+        request.andExpect(status().isOk)
+        assertThat(repo.addCategoryArgumentId, equalTo(25L))
+        assertThat(repo.addCategoryArgumentCategoryId, equalTo(2L))
+    }
 }

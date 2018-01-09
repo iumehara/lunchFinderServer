@@ -21,4 +21,9 @@ class RestaurantsController (val repo: RestaurantRepo) {
             @PathVariable id: Long,
             @RequestBody restaurantModelNew: RestaurantModelNew
     ) = repo.update(id, restaurantModelNew)
+
+    @PutMapping("{id}/categories/{categoryId}")
+    fun addCategory(@PathVariable id: Long, @PathVariable categoryId: Long) {
+        repo.addCategory(id, categoryId)
+    }
 }
