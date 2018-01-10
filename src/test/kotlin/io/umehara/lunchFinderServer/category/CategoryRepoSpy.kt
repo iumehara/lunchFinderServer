@@ -14,7 +14,7 @@ class CategoryRepoSpy : CategoryRepo {
         return CategoryModel(
                 1,
                 "Curry",
-                listOf(RestaurantModel(1L, "Green Asia", listOf(CategoryModelDB(1, "Curry"), CategoryModelDB(3, "Spicy"))))
+                listOf(RestaurantModel(1L, "Green Asia", "グリーンアジア", listOf(CategoryModelDB(1, "Curry"), CategoryModelDB(3, "Spicy"))))
         )
     }
 

@@ -10,7 +10,8 @@ import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 @RunWith(SpringRunner::class)
@@ -32,7 +33,7 @@ class RestaurantsControllerTest {
 
 
         //language=json
-        val expectedJSON = "[\n  {\"id\": 1, \"name\": \"Pintokona\"},\n  {\"id\": 2, \"name\": \"Momodori\"}\n]\n"
+        val expectedJSON = "[\n  {\"id\": 1, \"name\": \"Pizzakaya\", \"nameJp\": \"ピザカヤ\"},\n  {\"id\": 2, \"name\": \"Moti\", \"nameJp\": \"モティ\"}\n]\n"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))
@@ -42,9 +43,8 @@ class RestaurantsControllerTest {
     fun showReturnsRestaurant() {
         val request = mockController.perform(get("/restaurants/1"))
 
-
         //language=json
-        val expectedJSON = "{\"id\": 1, \"name\": \"Pintokona\", \"categories\": [{\"id\": 1, \"name\": \"Sushi\"}]}\n"
+        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizzakaya\", \n  \"nameJp\": \"ピザカヤ\", \n  \"categories\": [{\"id\": 1, \"name\": \"Pizza\"}]\n}\n"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))
@@ -53,7 +53,7 @@ class RestaurantsControllerTest {
     @Test
     fun createCallsRepoWithCorrectArguments() {
         //language=json
-        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"categoryIds\": [1]\n}"
+        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"categoryIds\": [1]\n}"
 
         val request = mockController.perform(post("/restaurants")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -61,13 +61,13 @@ class RestaurantsControllerTest {
 
 
         request.andExpect(status().isCreated)
-        assertThat(repo.createArgument, equalTo(RestaurantModelNew("Green Asia", listOf(1L))))
+        assertThat(repo.createArgument, equalTo(RestaurantModelNew("Green Asia", "グリーンアジア", listOf(1L))))
     }
 
     @Test
     fun updateCallsRepoWithCorrectArguments() {
         //language=json
-        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"categoryIds\": [1]\n}"
+        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"categoryIds\": [1]\n}"
 
         val request = mockController.perform(put("/restaurants/1")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -76,7 +76,7 @@ class RestaurantsControllerTest {
 
         request.andExpect(status().isOk)
         assertThat(repo.updateArgumentId, equalTo(1L))
-        assertThat(repo.updateArgumentRestaurantModelNew, equalTo(RestaurantModelNew("Green Asia", listOf(1L))))
+        assertThat(repo.updateArgumentRestaurantModelNew, equalTo(RestaurantModelNew("Green Asia", "グリーンアジア", listOf(1L))))
     }
 
     @Test

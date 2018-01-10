@@ -24,6 +24,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         val newRestaurant = RestaurantModelDB(
                 id,
                 restaurantModelNew.name,
+                restaurantModelNew.nameJp,
                 restaurantModelNew.categoryIds
         )
         restaurants.add(newRestaurant)
@@ -34,7 +35,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         restaurants = restaurants
                 .map {
                     if (it.id == id) {
-                        RestaurantModelDB(it.id, restaurantModelNew.name, restaurantModelNew.categoryIds)
+                        RestaurantModelDB(it.id, restaurantModelNew.name, restaurantModelNew.nameJp, restaurantModelNew.categoryIds)
                     } else {
                         it
                     }
@@ -46,7 +47,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         val categoryIds = restaurant.categoryIds.toMutableList()
         categoryIds.add(categoryId)
 
-        val restaurantModelNew = RestaurantModelNew(restaurant.name, categoryIds)
+        val restaurantModelNew = RestaurantModelNew(restaurant.name, restaurant.nameJp, categoryIds)
 
         update(id, restaurantModelNew)
     }

@@ -44,6 +44,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
 
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
+        parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
         parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
@@ -52,11 +53,13 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
     override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
         val sql = "UPDATE restaurants " +
                 "SET name=:name, " +
+                "name_jp=:name_jp, " +
                 "category_ids=:category_ids " +
                 "WHERE id=:id"
 
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
+        parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
         parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
         parameterSource.addValue("id", id)
 
@@ -89,6 +92,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         return RestaurantModelDB(
                 rs.getLong("id"),
                 rs.getString("name"),
+                rs.getString("name_jp"),
                 sqlArrayToKotlinList(rs.getArray("category_ids"))
         )
     }

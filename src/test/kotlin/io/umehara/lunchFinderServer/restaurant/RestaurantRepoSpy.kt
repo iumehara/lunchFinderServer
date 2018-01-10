@@ -1,17 +1,20 @@
 package io.umehara.lunchFinderServer.restaurant
 
-import io.umehara.lunchFinderServer.category.CategoryModelDB
+import io.umehara.lunchFinderServer.category.CategoryFixture.Pizza
+import io.umehara.lunchFinderServer.category.CategoryFixture.Spicy
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Moti
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Pizzakaya
 
 class RestaurantRepoSpy : RestaurantRepo {
     override fun all(): List<RestaurantModelDB> {
         return listOf(
-                RestaurantModelDB(1, "Pintokona", listOf(1L)),
-                RestaurantModelDB(2, "Momodori", listOf(2L))
+                Pizzakaya(categories = listOf(Pizza().modelDb())).modelDB(),
+                Moti(categories = listOf(Spicy().modelDb())).modelDB()
         )
     }
 
     override fun get(id: Long): RestaurantModel {
-        return RestaurantModel(1, "Pintokona", listOf(CategoryModelDB(1L, "Sushi")))
+        return Pizzakaya(categories = listOf(Pizza().modelDb())).model()
     }
 
     var createArgument: RestaurantModelNew? = null

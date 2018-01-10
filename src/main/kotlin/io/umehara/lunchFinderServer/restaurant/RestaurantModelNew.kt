@@ -1,6 +1,8 @@
 package io.umehara.lunchFinderServer.restaurant
 
 data class RestaurantModelNew(
-        var name: String = "",
+        val name: String = "",
+        val nameJp: String = "",
         var categoryIds: List<Long> = ArrayList()
-)
+) {
+}

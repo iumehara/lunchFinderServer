@@ -25,6 +25,7 @@ class CategoryRepoDB(
             RestaurantModel(
                     it.id,
                     it.name,
+                    it.nameJp,
                     it.categoryIds.map { categoriesHash[it] as CategoryModelDB }
             )
         }

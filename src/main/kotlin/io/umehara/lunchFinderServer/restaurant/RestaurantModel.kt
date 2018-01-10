@@ -5,10 +5,11 @@ import io.umehara.lunchFinderServer.category.CategoryModelDB
 data class RestaurantModel(
         var id: Long = 0,
         var name: String = "",
+        var nameJp: String = "",
         var categories: List<CategoryModelDB> = ArrayList()
 ) {
     constructor(
             restaurantModelDB: RestaurantModelDB,
             categories: List<CategoryModelDB>
-    ): this(restaurantModelDB.id, restaurantModelDB.name, categories)
+    ): this(restaurantModelDB.id, restaurantModelDB.name, restaurantModelDB.nameJp, categories)
 }

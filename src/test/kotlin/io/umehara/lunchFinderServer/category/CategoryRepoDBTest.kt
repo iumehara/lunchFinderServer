@@ -38,14 +38,14 @@ class CategoryRepoDBTest {
         val seedCategory = CategoryModelDB(1L, "Sushi")
         fakeCategoryDataMapper.setSeedCategories(listOf(seedCategory))
 
-        val seedRestaurant = RestaurantModelDB(1L, "Pintokona", listOf(1L))
+        val seedRestaurant = RestaurantModelDB(1L, "Pintokona", "ぴんとこな", listOf(1L))
         fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
 
 
         val category = categoryRepoDB.get(1L)
 
 
-        val expectedCategory = CategoryModel(1L, "Sushi", listOf(RestaurantModel(seedRestaurant.id, seedRestaurant.name, listOf(seedCategory))))
+        val expectedCategory = CategoryModel(1L, "Sushi", listOf(RestaurantModel(seedRestaurant.id, seedRestaurant.name, seedRestaurant.nameJp, listOf(seedCategory))))
         assertThat(category, equalTo(expectedCategory))
     }
 

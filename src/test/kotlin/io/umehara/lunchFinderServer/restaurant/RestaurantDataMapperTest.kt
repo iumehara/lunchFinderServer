@@ -1,5 +1,7 @@
 package io.umehara.lunchFinderServer.restaurant
 
+import io.umehara.lunchFinderServer.category.CategoryFixture.*
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
@@ -22,72 +24,66 @@ abstract class RestaurantDataMapperTest {
 
     @Test
     fun allByCategoryIdReturnsRestaurants() {
-        val restaurant1 = RestaurantModelNew("Momodori", listOf(1L))
-        restaurantDataMapper.create(restaurant1)
-        val restaurant2 = RestaurantModelNew("Pintokona", listOf(2L))
-        restaurantDataMapper.create(restaurant2)
-        val restaurant3 = RestaurantModelNew("Green Asia", listOf(1L, 2L))
-        restaurantDataMapper.create(restaurant3)
+        val spicy = Spicy().modelDb()
+        val curry = Curry().modelDb()
+        val sushi = Sushi().modelDb()
+        restaurantDataMapper.create(Pizzakaya(categories = listOf(spicy)).modelNew())
+        restaurantDataMapper.create(Moti(categories = listOf(spicy, curry)).modelNew())
+        restaurantDataMapper.create(Pintokona(categories = listOf(sushi)).modelNew())
 
 
-        val restaurants = restaurantDataMapper.allByCategoryId(2L)
+        val restaurants = restaurantDataMapper.allByCategoryId(spicy.id)
 
 
         assertThat(restaurants.size, equalTo(2))
-        assertThat(restaurants[0].name, equalTo("Pintokona"))
-        assertThat(restaurants[1].name, equalTo("Green Asia"))
+        assertThat(restaurants[0].name, equalTo("Pizzakaya"))
+        assertThat(restaurants[1].name, equalTo("Moti"))
     }
 
     @Test
     fun createAndGetOneRestaurant() {
-        val restaurantModelNew = RestaurantModelNew("Momodori", listOf(1L, 5L))
-        restaurantDataMapper.create(restaurantModelNew)
+        val restaurantId = restaurantDataMapper.create(Pintokona().modelNew())
 
-        val restaurant = restaurantDataMapper.get(1L)
-        assertThat(restaurant, equalTo(RestaurantModelDB(1, "Momodori", listOf(1L, 5L))))
+
+        val actualRestaurant = restaurantDataMapper.get(restaurantId)
+
+
+        val expectedRestaurant = RestaurantModelDB(restaurantId, "Pintokona", "ぴんとこな", listOf(4L))
+        assertThat(actualRestaurant, equalTo(expectedRestaurant))
     }
 
     @Test
     fun createAndGetMultipleRestaurants() {
-        val restaurant1 = RestaurantModelNew("Momodori", listOf(1L))
-        restaurantDataMapper.create(restaurant1)
-        val restaurant2 = RestaurantModelNew("Pintokona", listOf(2L))
-        restaurantDataMapper.create(restaurant2)
+        restaurantDataMapper.create(Pizzakaya().modelNew())
+        restaurantDataMapper.create(Moti().modelNew())
+
 
         val restaurants = restaurantDataMapper.all()
         assertThat(restaurants.size, equalTo(2))
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Momodori", listOf(1L))))
-        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Pintokona", listOf(2L))))
+        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", listOf(1L, 2L))))
+        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Moti","モティ", listOf(3L, 2L))))
     }
 
     @Test
     fun createUpdateAndGetRestaurant() {
-        val newRestaurant = RestaurantModelNew("Momodori", listOf(1L))
+        val newRestaurant = Pizzakaya().modelNew()
         val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
 
-        val editedRestaurant = RestaurantModelNew("百鳥", listOf(2L))
+        val editedRestaurant = RestaurantModelNew("Pizzakaya2", "ピザカヤ２", listOf(99L))
         restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
 
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
-        assertThat(restaurant, equalTo(RestaurantModelDB(
-                createdRestaurantId,
-                "百鳥",
-                listOf(2L)
-        )))
+        assertThat(restaurant, equalTo(RestaurantModelDB(createdRestaurantId, "Pizzakaya2", "ピザカヤ２", listOf(99L))))
     }
 
     @Test
     fun createAddCategoryAndGetRestaurant() {
-        val newRestaurant = RestaurantModelNew("Momodori", listOf(1L))
+        val newRestaurant = Pizzakaya().modelNew()
         val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
 
-        restaurantDataMapper.addCategory(createdRestaurantId, 5L)
+        restaurantDataMapper.addCategory(createdRestaurantId, 555L)
 
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
-        assertThat(restaurant, equalTo(RestaurantModelDB(
-                createdRestaurantId,
-                "Momodori",
-                listOf(1L, 5L)
-        )))
+        assertThat(restaurant, equalTo(RestaurantModelDB(createdRestaurantId, "Pizzakaya", "ピザカヤ", listOf(1L, 2L, 555L))))
     }
 }

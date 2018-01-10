@@ -1,7 +1,8 @@
 package io.umehara.lunchFinderServer.restaurant
 
 import io.umehara.lunchFinderServer.category.CategoryDataMapperFake
-import io.umehara.lunchFinderServer.category.CategoryModelDB
+import io.umehara.lunchFinderServer.category.CategoryFixture
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
@@ -20,8 +21,8 @@ class RestaurantRepoDBTest {
     @Test
     fun allReturnsRestaurants() {
         val seedRestaurants = listOf(
-                RestaurantModelDB(1L, "Pintokona", listOf(1L)),
-                RestaurantModelDB(2L, "Momodori", listOf(2L))
+                Pizzakaya().modelDB(),
+                Moti().modelDB()
         )
         fakeRestaurantDataMapper.setSeedRestaurants(seedRestaurants)
 
@@ -34,58 +35,71 @@ class RestaurantRepoDBTest {
 
     @Test
     fun getReturnsRestaurant() {
-        val seedRestaurant = RestaurantModelDB(1L, "Pintokona", listOf(5L))
-        fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
+        val pintokona = Pintokona().modelDB()
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokona))
 
-        val seedCategories = listOf(CategoryModelDB(5L, "Sushi"))
-        fakeCategoryDataMapper.setSeedCategories(seedCategories)
-
-
-        val restaurant = restaurantRepoDB.get(1L)
-        val expectedRestaurant = RestaurantModel(1L, "Pintokona", listOf(CategoryModelDB(5L, "Sushi")))
+        val sushi = CategoryFixture.Sushi().modelDb()
+        fakeCategoryDataMapper.setSeedCategories(listOf(sushi))
 
 
+        val restaurant = restaurantRepoDB.get(pintokona.id)
 
+
+        val expectedRestaurant = RestaurantModel(
+                pintokona.id,
+                "Pintokona",
+                "ぴんとこな",
+                listOf(sushi)
+        )
         assertThat(restaurant, equalTo(expectedRestaurant))
     }
 
     @Test
     fun createPersistsNewRestaurant() {
-        val restaurantModelNew = RestaurantModelNew("Green Asia", listOf(1L))
+        val restaurantModelNew = Pintokona().modelNew()
         val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)
 
 
         val restaurants = restaurantRepoDB.all()
 
 
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(createdRestaurantId, "Green Asia", listOf(1L))))
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pintokona",
+                "ぴんとこな",
+                listOf(4L)
+        )
+        assertThat(restaurants[0], equalTo(expectedRestaurant))
     }
 
     @Test
     fun updateUpdatesExistingRestaurant() {
-        val restaurantModelNew = RestaurantModelNew("Green Asia", listOf(1L))
-        val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)
-        val editedRestaurantModelNew = RestaurantModelNew("Blue Asia", listOf(2L))
+        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
+        val editedRestaurantModelNew = RestaurantModelNew("Pintokonai", "ぴんとこない", listOf(99L))
 
 
         restaurantRepoDB.update(createdRestaurantId, editedRestaurantModelNew)
 
 
         val restaurants = restaurantRepoDB.all()
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(createdRestaurantId, "Blue Asia", listOf(2L))))
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pintokonai",
+                "ぴんとこない",
+                listOf(99L)
+        )
+        assertThat(restaurants[0], equalTo(expectedRestaurant))
     }
 
     @Test
     fun addCategoryAddsCategoryToRestaurant() {
-        val restaurantModelNew = RestaurantModelNew("Green Asia", listOf(1L))
-        val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)
+        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
 
         restaurantRepoDB.addCategory(createdRestaurantId, 33L)
 
 
         val restaurants = restaurantRepoDB.all()
-        assertThat(restaurants[0], equalTo(
-                RestaurantModelDB(createdRestaurantId, "Green Asia", listOf(1L, 33L)))
-        )
+        val expectedRestaurant = RestaurantModelDB(createdRestaurantId, "Pintokona", "ぴんとこな", listOf(4L, 33L))
+        assertThat(restaurants[0], equalTo(expectedRestaurant))
     }
 }

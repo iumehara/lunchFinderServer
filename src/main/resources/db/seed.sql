@@ -1,10 +1,10 @@
-INSERT INTO restaurants (name, category_ids)
+INSERT INTO restaurants (name, name_jp, category_ids)
 VALUES
-  ('Pintokona', '{1}'),
-  ('Pizzakaya', '{2, 3}'),
-  ('Dhiya', '{4, 3}') ,
-  ('Green Asia', '{5, 3}'),
-  ('Manpukutei', '{6}')
+  ('Pintokona', 'ぴんとこな', '{1}'),
+  ('Pizzakaya', 'ピザカヤ', '{2, 3}'),
+  ('Dhiya', 'ディヤ', '{4, 3}') ,
+  ('Green Asia', 'グリーンアジア', '{5, 3}'),
+  ('Manpukutei', 'まんぷく亭', '{6}')
 ;
 
 INSERT INTO categories (name)
