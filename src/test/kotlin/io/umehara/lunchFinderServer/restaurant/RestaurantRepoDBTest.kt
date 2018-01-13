@@ -102,4 +102,15 @@ class RestaurantRepoDBTest {
         val expectedRestaurant = RestaurantModelDB(createdRestaurantId, "Pintokona", "ぴんとこな", listOf(4L, 33L))
         assertThat(restaurants[0], equalTo(expectedRestaurant))
     }
+
+    @Test
+    fun destroyDeletesRestaurant() {
+        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
+
+        restaurantRepoDB.destroy(createdRestaurantId)
+
+
+        val restaurants = restaurantRepoDB.all()
+        assertThat(restaurants.size, equalTo(0))
+    }
 }

@@ -13,15 +13,18 @@ class RestaurantRepoSpy : RestaurantRepo {
         )
     }
 
+
     override fun get(id: Long): RestaurantModel {
         return Pizzakaya(categories = listOf(Pizza().modelDb())).model()
     }
+
 
     var createArgument: RestaurantModelNew? = null
     override fun create(restaurantModelNew: RestaurantModelNew): Long {
         createArgument = restaurantModelNew
         return 0L
     }
+
 
     var updateArgumentRestaurantModelNew: RestaurantModelNew? = null
     var updateArgumentId: Long? = null
@@ -30,10 +33,17 @@ class RestaurantRepoSpy : RestaurantRepo {
         updateArgumentRestaurantModelNew = restaurantModelNew
     }
 
+
     var addCategoryArgumentId: Long? = null
     var addCategoryArgumentCategoryId: Long? = null
     override fun addCategory(id: Long, categoryId: Long) {
         addCategoryArgumentId = id
         addCategoryArgumentCategoryId = categoryId
+    }
+
+
+    var destroyArgument: Long? = null
+    override fun destroy(id: Long) {
+        destroyArgument = id
     }
 }

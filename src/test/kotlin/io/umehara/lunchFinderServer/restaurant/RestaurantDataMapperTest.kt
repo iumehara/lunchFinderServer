@@ -86,4 +86,15 @@ abstract class RestaurantDataMapperTest {
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
         assertThat(restaurant, equalTo(RestaurantModelDB(createdRestaurantId, "Pizzakaya", "ピザカヤ", listOf(1L, 2L, 555L))))
     }
+
+    @Test
+    fun createAndDeleteRestaurant() {
+        val newRestaurant = Pizzakaya().modelNew()
+        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+
+        restaurantDataMapper.destroy(createdRestaurantId)
+
+        val restaurants = restaurantDataMapper.all()
+        assertThat(restaurants.size, equalTo(0))
+    }
 }

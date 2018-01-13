@@ -88,6 +88,11 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         )
     }
 
+    override fun destroy(id: Long) {
+        val sql = "DELETE FROM restaurants WHERE id = ?"
+        jdbcTemplate.update(sql, id)
+    }
+
     private fun restaurantRowMapper(rs: ResultSet): RestaurantModelDB {
         return RestaurantModelDB(
                 rs.getLong("id"),

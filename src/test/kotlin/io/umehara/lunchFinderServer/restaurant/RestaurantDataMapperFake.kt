@@ -51,4 +51,9 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
 
         update(id, restaurantModelNew)
     }
+
+    override fun destroy(id: Long) {
+        val filteredRestaurants = restaurants.filter { it.id != id }
+        restaurants = filteredRestaurants as MutableList<RestaurantModelDB>
+    }
 }

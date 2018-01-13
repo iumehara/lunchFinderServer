@@ -29,4 +29,8 @@ class RestaurantRepoDB(
     override fun addCategory(id: Long, categoryId: Long) {
         restaurantDataMapper.addCategory(id, categoryId)
     }
+
+    override fun destroy(id: Long) {
+        restaurantDataMapper.destroy(id)
+    }
 }

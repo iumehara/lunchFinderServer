@@ -89,4 +89,13 @@ class RestaurantsControllerTest {
         assertThat(repo.addCategoryArgumentId, equalTo(25L))
         assertThat(repo.addCategoryArgumentCategoryId, equalTo(2L))
     }
+
+    @Test
+    fun destroyCallsRepoWithCorrectArguments() {
+        val request = mockController.perform(delete("/restaurants/5"))
+
+
+        request.andExpect(status().isOk)
+        assertThat(repo.destroyArgument, equalTo(5L))
+    }
 }
