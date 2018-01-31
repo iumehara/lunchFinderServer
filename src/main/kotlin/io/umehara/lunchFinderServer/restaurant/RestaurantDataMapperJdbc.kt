@@ -54,25 +54,33 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
     }
 
     override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
-        val sql = "UPDATE restaurants " +
+        var sql = "UPDATE restaurants " +
                 "SET name=:name, " +
                 "name_jp=:name_jp, " +
-                "category_ids=:category_ids, " +
-                "website=:website, " +
-                "geo_lat=:geo_lat, " +
-                "geo_long=:geo_long " +
-                "WHERE id=:id"
+                "category_ids=:category_ids"
+
 
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
         parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
-        parameterSource.addValue("website", restaurantModelNew.website)
-        parameterSource.addValue("geo_lat", restaurantModelNew.geoLocation?.lat)
-        parameterSource.addValue("geo_long", restaurantModelNew.geoLocation?.long)
+
+        if (restaurantModelNew.website != null) {
+            sql += ", website=:website"
+            parameterSource.addValue("website", restaurantModelNew.website)
+        }
+
+        if (restaurantModelNew.geoLocation != null) {
+            sql += ", geo_lat=:geo_lat, geo_long=:geo_long"
+            parameterSource.addValue("geo_lat", restaurantModelNew.geoLocation.lat)
+            parameterSource.addValue("geo_long", restaurantModelNew.geoLocation.long)
+        }
+
         parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
         parameterSource.addValue("id", id)
 
         val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
+
+        sql += " WHERE id=:id"
 
         namedParameterJdbcTemplate.update(
                 sql,

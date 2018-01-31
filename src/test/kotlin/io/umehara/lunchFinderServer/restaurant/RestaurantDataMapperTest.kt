@@ -3,7 +3,8 @@ package io.umehara.lunchFinderServer.restaurant
 import io.umehara.lunchFinderServer.category.CategoryFixture.*
 import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.*
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.IsEqual.equalTo
+import org.hamcrest.Matchers.equalTo
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import java.math.BigDecimal
@@ -90,6 +91,25 @@ abstract class RestaurantDataMapperTest {
                 listOf(99L)
         )
         assertThat(restaurant, equalTo(expectedRestaurant))
+    }
+
+    @Test
+    fun createUpdateOnlyRequiredFieldsAndGetRestaurant() {
+        val newRestaurant = Pizzakaya().modelNew()
+        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+
+        val editedRestaurant = RestaurantModelNew(
+                "Pizzakaya2",
+                "ピザカヤ２",
+                null,
+                null,
+                listOf(99L)
+        )
+        restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
+
+        val restaurant = restaurantDataMapper.get(createdRestaurantId)
+        assertNotNull(restaurant.website)
+        assertNotNull(restaurant.geoLocation)
     }
 
     @Test

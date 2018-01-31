@@ -41,8 +41,8 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
                                 it.id,
                                 restaurantModelNew.name,
                                 restaurantModelNew.nameJp,
-                                restaurantModelNew.website,
-                                restaurantModelNew.geoLocation,
+                                restaurantModelNew.website ?: it.website,
+                                restaurantModelNew.geoLocation ?: it.geoLocation,
                                 restaurantModelNew.categoryIds
                         )
                     } else {
