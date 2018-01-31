@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
+import java.math.BigDecimal
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -44,7 +45,7 @@ class RestaurantsControllerTest {
         val request = mockController.perform(get("/restaurants/1"))
 
         //language=json
-        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizzakaya\", \n  \"nameJp\": \"ピザカヤ\", \n  \"categories\": [{\"id\": 1, \"name\": \"Pizza\"}]\n}\n"
+        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizzakaya\", \n  \"nameJp\": \"ピザカヤ\", \n  \"categories\": [{\"id\": 1, \"name\": \"Pizza\"}],\n  \"website\": \"pizzakaya.com\",\n  \"geoLocation\": {\n    \"lat\": 35.662265,\n    \"long\": 139.726658\n  }\n}\n"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))
@@ -53,7 +54,7 @@ class RestaurantsControllerTest {
     @Test
     fun createCallsRepoWithCorrectArguments() {
         //language=json
-        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"categoryIds\": [1]\n}"
+        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"website\": \"www.example.com\",\n  \"geoLocation\": {\n    \"lat\": 33.33,\n    \"long\": 33.33\n  },\n  \"categoryIds\": [1]\n}"
 
         val request = mockController.perform(post("/restaurants")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -61,13 +62,18 @@ class RestaurantsControllerTest {
 
 
         request.andExpect(status().isCreated)
-        assertThat(repo.createArgument, equalTo(RestaurantModelNew("Green Asia", "グリーンアジア", listOf(1L))))
+        assertThat(repo.createArgument, equalTo(RestaurantModelNew(
+                "Green Asia",
+                "グリーンアジア",
+                "www.example.com",
+                GeoLocation(BigDecimal.valueOf(33.33),BigDecimal.valueOf(33.33)),
+                listOf(1L))))
     }
 
     @Test
     fun updateCallsRepoWithCorrectArguments() {
         //language=json
-        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"categoryIds\": [1]\n}"
+        val requestBody = "{\n  \"name\": \"Green Asia\",\n  \"nameJp\": \"グリーンアジア\",\n  \"website\": \"www.example.com\",\n  \"geoLocation\": {\n    \"lat\": 33.33,\n    \"long\": 33.33\n  },\n  \"categoryIds\": [1]\n}"
 
         val request = mockController.perform(put("/restaurants/1")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -76,7 +82,14 @@ class RestaurantsControllerTest {
 
         request.andExpect(status().isOk)
         assertThat(repo.updateArgumentId, equalTo(1L))
-        assertThat(repo.updateArgumentRestaurantModelNew, equalTo(RestaurantModelNew("Green Asia", "グリーンアジア", listOf(1L))))
+        assertThat(repo.updateArgumentRestaurantModelNew, equalTo(
+                RestaurantModelNew(
+                        "Green Asia",
+                        "グリーンアジア",
+                        "www.example.com",
+                        GeoLocation(BigDecimal.valueOf(33.33),BigDecimal.valueOf(33.33)),
+                        listOf(1L)
+                )))
     }
 
     @Test

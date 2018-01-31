@@ -1,10 +1,11 @@
 package io.umehara.lunchFinderServer.category
 
+import io.umehara.lunchFinderServer.category.CategoryFixture.Sushi
 import io.umehara.lunchFinderServer.restaurant.RestaurantDataMapperFake
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Pintokona
 import io.umehara.lunchFinderServer.restaurant.RestaurantModel
-import io.umehara.lunchFinderServer.restaurant.RestaurantModelDB
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.IsEqual.*
+import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
 
@@ -35,17 +36,21 @@ class CategoryRepoDBTest {
 
     @Test
     fun getReturnsCategory() {
-        val seedCategory = CategoryModelDB(1L, "Sushi")
-        fakeCategoryDataMapper.setSeedCategories(listOf(seedCategory))
+        val sushiModelDB = Sushi().modelDb()
+        fakeCategoryDataMapper.setSeedCategories(listOf(sushiModelDB))
 
-        val seedRestaurant = RestaurantModelDB(1L, "Pintokona", "ぴんとこな", listOf(1L))
-        fakeRestaurantDataMapper.setSeedRestaurants(listOf(seedRestaurant))
-
-
-        val category = categoryRepoDB.get(1L)
+        val pintokonaModelDB = Pintokona().modelDB()
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokonaModelDB))
 
 
-        val expectedCategory = CategoryModel(1L, "Sushi", listOf(RestaurantModel(seedRestaurant.id, seedRestaurant.name, seedRestaurant.nameJp, listOf(seedCategory))))
+        val category = categoryRepoDB.get(sushiModelDB.id)
+
+
+        val expectedCategory = CategoryModel(
+                4L,
+                "Sushi",
+                listOf(RestaurantModel(pintokonaModelDB, listOf(sushiModelDB)))
+        )
         assertThat(category, equalTo(expectedCategory))
     }
 

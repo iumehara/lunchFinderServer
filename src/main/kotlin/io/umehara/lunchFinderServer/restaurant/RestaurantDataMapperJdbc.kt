@@ -45,6 +45,9 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
         parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
+        parameterSource.addValue("website", restaurantModelNew.website)
+        parameterSource.addValue("geo_lat", restaurantModelNew.geoLocation?.lat)
+        parameterSource.addValue("geo_long", restaurantModelNew.geoLocation?.long)
         parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
@@ -54,12 +57,18 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         val sql = "UPDATE restaurants " +
                 "SET name=:name, " +
                 "name_jp=:name_jp, " +
-                "category_ids=:category_ids " +
+                "category_ids=:category_ids, " +
+                "website=:website, " +
+                "geo_lat=:geo_lat, " +
+                "geo_long=:geo_long " +
                 "WHERE id=:id"
 
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
         parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
+        parameterSource.addValue("website", restaurantModelNew.website)
+        parameterSource.addValue("geo_lat", restaurantModelNew.geoLocation?.lat)
+        parameterSource.addValue("geo_long", restaurantModelNew.geoLocation?.long)
         parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
         parameterSource.addValue("id", id)
 
@@ -98,6 +107,11 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
                 rs.getLong("id"),
                 rs.getString("name"),
                 rs.getString("name_jp"),
+                rs.getString("website"),
+                GeoLocationFactory().init(
+                        rs.getBigDecimal("geo_lat"),
+                        rs.getBigDecimal("geo_long")
+                ),
                 sqlArrayToKotlinList(rs.getArray("category_ids"))
         )
     }

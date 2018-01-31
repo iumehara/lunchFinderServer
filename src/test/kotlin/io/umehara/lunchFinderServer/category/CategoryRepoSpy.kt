@@ -1,6 +1,6 @@
 package io.umehara.lunchFinderServer.category
 
-import io.umehara.lunchFinderServer.restaurant.RestaurantModel
+import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Pizzakaya
 
 class CategoryRepoSpy : CategoryRepo {
     override fun all(): List<CategoryModelDB> {
@@ -13,8 +13,8 @@ class CategoryRepoSpy : CategoryRepo {
     override fun get(id: Long): CategoryModel {
         return CategoryModel(
                 1,
-                "Curry",
-                listOf(RestaurantModel(1L, "Green Asia", "グリーンアジア", listOf(CategoryModelDB(1, "Curry"), CategoryModelDB(3, "Spicy"))))
+                "Pizza",
+                listOf(Pizzakaya().model())
         )
     }
 

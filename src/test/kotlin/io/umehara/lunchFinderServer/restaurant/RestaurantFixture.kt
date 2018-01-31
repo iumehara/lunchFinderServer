@@ -2,17 +2,20 @@ package io.umehara.lunchFinderServer.restaurant
 
 import io.umehara.lunchFinderServer.category.CategoryFixture.*
 import io.umehara.lunchFinderServer.category.CategoryModelDB
+import java.math.BigDecimal
 
 class RestaurantFixture {
     class Pizzakaya(
             val id: Long = 1,
-            val categories: List<CategoryModelDB> = listOf(Pizza().modelDb(), Spicy().modelDb())
+            val categories: List<CategoryModelDB> = listOf(Pizza().modelDb())
     ) {
         val name = "Pizzakaya"
         private val nameJp = "ピザカヤ"
-        fun model() = RestaurantModel(id, name, nameJp, categories)
-        fun modelDB() = RestaurantModelDB(id, name, nameJp, categories.map { it.id })
-        fun modelNew() = RestaurantModelNew(name, nameJp, categories.map { it.id })
+        private val website = "pizzakaya.com"
+        private val geoLocation = GeoLocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658))
+        fun model() = RestaurantModel(id, name, nameJp, website, geoLocation, categories)
+        fun modelDB() = RestaurantModelDB(id, name, nameJp, website, geoLocation, categories.map { it.id })
+        fun modelNew() = RestaurantModelNew(name, nameJp, website, geoLocation, categories.map { it.id })
     }
 
     class Moti(
@@ -21,8 +24,11 @@ class RestaurantFixture {
     ) {
         val name = "Moti"
         private val nameJp = "モティ"
-        fun modelDB() = RestaurantModelDB(id, name, nameJp, categories.map { it.id })
-        fun modelNew() = RestaurantModelNew(name, nameJp, categories.map { it.id })
+        private val website = null
+        private val geoLocation = null
+        fun model() = RestaurantModel(id, name, nameJp, website, geoLocation, categories)
+        fun modelDB() = RestaurantModelDB(id, name, nameJp, website, geoLocation, categories.map { it.id })
+        fun modelNew() = RestaurantModelNew(name, nameJp, website, geoLocation, categories.map { it.id })
     }
 
     class Pintokona(
@@ -31,7 +37,9 @@ class RestaurantFixture {
     ) {
         val name = "Pintokona"
         private val nameJp = "ぴんとこな"
-        fun modelDB() = RestaurantModelDB(id, name, nameJp, categories.map { it.id })
-        fun modelNew() = RestaurantModelNew(name, nameJp, categories.map { it.id })
+        private val website = null
+        private val geoLocation = null
+        fun modelDB() = RestaurantModelDB(id, name, nameJp, website, geoLocation, categories.map { it.id })
+        fun modelNew() = RestaurantModelNew(name, nameJp, website, geoLocation, categories.map { it.id })
     }
 }

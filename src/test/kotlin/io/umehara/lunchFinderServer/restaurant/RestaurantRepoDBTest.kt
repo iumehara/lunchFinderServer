@@ -7,6 +7,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
+import java.math.BigDecimal
 
 class RestaurantRepoDBTest {
     private lateinit var restaurantRepoDB: RestaurantRepoDB
@@ -35,21 +36,22 @@ class RestaurantRepoDBTest {
 
     @Test
     fun getReturnsRestaurant() {
-        val pintokona = Pintokona().modelDB()
-        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokona))
+        val pizzakaya = Pizzakaya().modelDB()
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pizzakaya))
 
-        val sushi = CategoryFixture.Sushi().modelDb()
-        fakeCategoryDataMapper.setSeedCategories(listOf(sushi))
+        val pizza = CategoryFixture.Pizza().modelDb()
+        fakeCategoryDataMapper.setSeedCategories(listOf(pizza))
 
-
-        val restaurant = restaurantRepoDB.get(pintokona.id)
+        val restaurant = restaurantRepoDB.get(pizzakaya.id)
 
 
         val expectedRestaurant = RestaurantModel(
-                pintokona.id,
-                "Pintokona",
-                "ぴんとこな",
-                listOf(sushi)
+                pizzakaya.id,
+                "Pizzakaya",
+                "ピザカヤ",
+                "pizzakaya.com",
+                GeoLocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658)),
+                listOf(pizza)
         )
         assertThat(restaurant, equalTo(expectedRestaurant))
     }
@@ -67,6 +69,8 @@ class RestaurantRepoDBTest {
                 createdRestaurantId,
                 "Pintokona",
                 "ぴんとこな",
+                null,
+                null,
                 listOf(4L)
         )
         assertThat(restaurants[0], equalTo(expectedRestaurant))
@@ -75,7 +79,13 @@ class RestaurantRepoDBTest {
     @Test
     fun updateUpdatesExistingRestaurant() {
         val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
-        val editedRestaurantModelNew = RestaurantModelNew("Pintokonai", "ぴんとこない", listOf(99L))
+        val editedRestaurantModelNew = RestaurantModelNew(
+                "Pintokonai",
+                "ぴんとこない",
+                null,
+                null,
+                listOf(99L)
+        )
 
 
         restaurantRepoDB.update(createdRestaurantId, editedRestaurantModelNew)
@@ -86,6 +96,8 @@ class RestaurantRepoDBTest {
                 createdRestaurantId,
                 "Pintokonai",
                 "ぴんとこない",
+                null,
+                null,
                 listOf(99L)
         )
         assertThat(restaurants[0], equalTo(expectedRestaurant))
@@ -99,7 +111,13 @@ class RestaurantRepoDBTest {
 
 
         val restaurants = restaurantRepoDB.all()
-        val expectedRestaurant = RestaurantModelDB(createdRestaurantId, "Pintokona", "ぴんとこな", listOf(4L, 33L))
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pintokona",
+                "ぴんとこな",
+                null,
+                null,
+                listOf(4L, 33L))
         assertThat(restaurants[0], equalTo(expectedRestaurant))
     }
 

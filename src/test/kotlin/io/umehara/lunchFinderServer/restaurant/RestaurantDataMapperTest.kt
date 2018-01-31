@@ -6,6 +6,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
+import java.math.BigDecimal
 
 abstract class RestaurantDataMapperTest {
     private lateinit var restaurantDataMapper: RestaurantDataMapper
@@ -48,7 +49,7 @@ abstract class RestaurantDataMapperTest {
         val actualRestaurant = restaurantDataMapper.get(restaurantId)
 
 
-        val expectedRestaurant = RestaurantModelDB(restaurantId, "Pintokona", "ぴんとこな", listOf(4L))
+        val expectedRestaurant = RestaurantModelDB(restaurantId, "Pintokona", "ぴんとこな", null, null, listOf(4L))
         assertThat(actualRestaurant, equalTo(expectedRestaurant))
     }
 
@@ -60,8 +61,9 @@ abstract class RestaurantDataMapperTest {
 
         val restaurants = restaurantDataMapper.all()
         assertThat(restaurants.size, equalTo(2))
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", listOf(1L, 2L))))
-        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Moti","モティ", listOf(3L, 2L))))
+        val geoLocation = GeoLocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658))
+        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", "pizzakaya.com", geoLocation, listOf(1L))))
+        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Moti", "モティ",null,null, listOf(3L, 2L))))
     }
 
     @Test
@@ -69,11 +71,25 @@ abstract class RestaurantDataMapperTest {
         val newRestaurant = Pizzakaya().modelNew()
         val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
 
-        val editedRestaurant = RestaurantModelNew("Pizzakaya2", "ピザカヤ２", listOf(99L))
+        val editedRestaurant = RestaurantModelNew(
+                "Pizzakaya2",
+                "ピザカヤ２",
+                "pizzakaya2.com",
+                GeoLocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
+                listOf(99L)
+        )
         restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
 
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
-        assertThat(restaurant, equalTo(RestaurantModelDB(createdRestaurantId, "Pizzakaya2", "ピザカヤ２", listOf(99L))))
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pizzakaya2",
+                "ピザカヤ２",
+                "pizzakaya2.com",
+                GeoLocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
+                listOf(99L)
+        )
+        assertThat(restaurant, equalTo(expectedRestaurant))
     }
 
     @Test
@@ -83,8 +99,16 @@ abstract class RestaurantDataMapperTest {
 
         restaurantDataMapper.addCategory(createdRestaurantId, 555L)
 
-        val restaurant = restaurantDataMapper.get(createdRestaurantId)
-        assertThat(restaurant, equalTo(RestaurantModelDB(createdRestaurantId, "Pizzakaya", "ピザカヤ", listOf(1L, 2L, 555L))))
+        val actualRestaurant = restaurantDataMapper.get(createdRestaurantId)
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pizzakaya",
+                "ピザカヤ",
+                "pizzakaya.com",
+                GeoLocation(BigDecimal.valueOf(35.662265),BigDecimal.valueOf(139.726658)),
+                listOf(1L, 555L)
+        )
+        assertThat(actualRestaurant, equalTo(expectedRestaurant))
     }
 
     @Test

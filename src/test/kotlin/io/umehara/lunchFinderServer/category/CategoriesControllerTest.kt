@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 
 @RunWith(SpringRunner::class)
@@ -42,12 +41,12 @@ class CategoriesControllerTest {
     }
 
     @Test
-    fun showReturnsCategories() {
+    fun showReturnsCategory() {
         val request = mockController.perform(get("/categories/1"))
 
 
         //language=json
-        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Curry\", \n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Green Asia\", \"categories\": [{\"id\": 1, \"name\": \"Curry\"}, {\"id\": 3, \"name\": \"Spicy\"}]}\n  ]\n}"
+        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizza\", \n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Pizzakaya\", \"categories\": [{\"id\": 1, \"name\": \"Pizza\"}]}\n  ]\n}"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))

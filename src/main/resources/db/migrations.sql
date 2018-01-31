@@ -3,6 +3,9 @@ CREATE TABLE restaurants (
     id SERIAL,
     name varchar(100),
     name_jp varchar(100),
+    website varchar(100),
+    geo_lat decimal,
+    geo_long decimal,
     category_ids bigint[]
 );
 
