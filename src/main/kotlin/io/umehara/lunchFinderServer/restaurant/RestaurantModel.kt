@@ -7,7 +7,7 @@ data class RestaurantModel(
         val name: String = "",
         val nameJp: String = "",
         val website: String? = null,
-        val geoLocation: GeoLocation? = null,
+        val geolocation: Geolocation? = null,
         val categories: List<CategoryModelDB> = ArrayList()
 ) {
     constructor(
@@ -18,7 +18,7 @@ data class RestaurantModel(
             restaurantModelDB.name,
             restaurantModelDB.nameJp,
             restaurantModelDB.website,
-            restaurantModelDB.geoLocation,
+            restaurantModelDB.geolocation,
             categories
     )
 }

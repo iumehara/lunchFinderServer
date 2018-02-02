@@ -50,7 +50,7 @@ class RestaurantRepoDBTest {
                 "Pizzakaya",
                 "ピザカヤ",
                 "pizzakaya.com",
-                GeoLocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658)),
+                Geolocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658)),
                 listOf(pizza)
         )
         assertThat(restaurant, equalTo(expectedRestaurant))

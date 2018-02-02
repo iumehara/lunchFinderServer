@@ -27,7 +27,7 @@ class CategoryRepoDB(
                     it.name,
                     it.nameJp,
                     it.website,
-                    it.geoLocation,
+                    it.geolocation,
                     it.categoryIds.map { categoriesHash[it] as CategoryModelDB }
             )
         }

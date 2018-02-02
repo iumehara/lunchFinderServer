@@ -26,7 +26,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
                 restaurantModelNew.name,
                 restaurantModelNew.nameJp,
                 restaurantModelNew.website,
-                restaurantModelNew.geoLocation,
+                restaurantModelNew.geolocation,
                 restaurantModelNew.categoryIds
         )
         restaurants.add(newRestaurant)
@@ -42,7 +42,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
                                 restaurantModelNew.name,
                                 restaurantModelNew.nameJp,
                                 restaurantModelNew.website ?: it.website,
-                                restaurantModelNew.geoLocation ?: it.geoLocation,
+                                restaurantModelNew.geolocation ?: it.geolocation,
                                 restaurantModelNew.categoryIds
                         )
                     } else {
@@ -60,7 +60,7 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
                 restaurant.name,
                 restaurant.nameJp,
                 restaurant.website,
-                restaurant.geoLocation,
+                restaurant.geolocation,
                 categoryIds
         )
 

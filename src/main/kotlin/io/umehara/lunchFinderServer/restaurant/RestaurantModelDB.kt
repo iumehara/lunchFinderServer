@@ -5,6 +5,6 @@ data class RestaurantModelDB(
         val name: String = "",
         val nameJp: String = "",
         val website: String? = null,
-        val geoLocation: GeoLocation? = null,
+        val geolocation: Geolocation? = null,
         val categoryIds: List<Long> = ArrayList()
 )

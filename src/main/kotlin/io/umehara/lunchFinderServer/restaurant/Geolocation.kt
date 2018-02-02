@@ -2,15 +2,15 @@ package io.umehara.lunchFinderServer.restaurant
 
 import java.math.BigDecimal
 
-data class GeoLocation(
+data class Geolocation(
         val lat: BigDecimal = BigDecimal.valueOf(0L),
         val long: BigDecimal = BigDecimal.valueOf(0L)
 )
 
 class GeoLocationFactory {
-    fun init(lat: BigDecimal?, long: BigDecimal?): GeoLocation? {
+    fun init(lat: BigDecimal?, long: BigDecimal?): Geolocation? {
         return if (lat != null && long != null) {
-            GeoLocation(lat, long)
+            Geolocation(lat, long)
         } else {
             null
         }

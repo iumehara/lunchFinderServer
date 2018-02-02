@@ -62,8 +62,8 @@ abstract class RestaurantDataMapperTest {
 
         val restaurants = restaurantDataMapper.all()
         assertThat(restaurants.size, equalTo(2))
-        val geoLocation = GeoLocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658))
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", "pizzakaya.com", geoLocation, listOf(1L))))
+        val geolocation = Geolocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658))
+        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", "pizzakaya.com", geolocation, listOf(1L))))
         assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Moti", "モティ",null,null, listOf(3L, 2L))))
     }
 
@@ -76,7 +76,7 @@ abstract class RestaurantDataMapperTest {
                 "Pizzakaya2",
                 "ピザカヤ２",
                 "pizzakaya2.com",
-                GeoLocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
+                Geolocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
                 listOf(99L)
         )
         restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
@@ -87,7 +87,7 @@ abstract class RestaurantDataMapperTest {
                 "Pizzakaya2",
                 "ピザカヤ２",
                 "pizzakaya2.com",
-                GeoLocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
+                Geolocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
                 listOf(99L)
         )
         assertThat(restaurant, equalTo(expectedRestaurant))
@@ -109,7 +109,7 @@ abstract class RestaurantDataMapperTest {
 
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
         assertNotNull(restaurant.website)
-        assertNotNull(restaurant.geoLocation)
+        assertNotNull(restaurant.geolocation)
     }
 
     @Test
@@ -125,7 +125,7 @@ abstract class RestaurantDataMapperTest {
                 "Pizzakaya",
                 "ピザカヤ",
                 "pizzakaya.com",
-                GeoLocation(BigDecimal.valueOf(35.662265),BigDecimal.valueOf(139.726658)),
+                Geolocation(BigDecimal.valueOf(35.662265),BigDecimal.valueOf(139.726658)),
                 listOf(1L, 555L)
         )
         assertThat(actualRestaurant, equalTo(expectedRestaurant))
