@@ -7,7 +7,7 @@ data class Geolocation(
         val long: BigDecimal = BigDecimal.valueOf(0L)
 )
 
-class GeoLocationFactory {
+class GeolocationFactory {
     fun init(lat: BigDecimal?, long: BigDecimal?): Geolocation? {
         return if (lat != null && long != null) {
             Geolocation(lat, long)

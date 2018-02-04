@@ -116,7 +116,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
                 rs.getString("name"),
                 rs.getString("name_jp"),
                 rs.getString("website"),
-                GeoLocationFactory().init(
+                GeolocationFactory().init(
                         rs.getBigDecimal("geo_lat"),
                         rs.getBigDecimal("geo_long")
                 ),
