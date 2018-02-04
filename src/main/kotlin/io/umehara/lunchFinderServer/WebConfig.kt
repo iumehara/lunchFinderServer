@@ -13,9 +13,7 @@ class WebConfig: WebMvcConfigurerAdapter() {
         if (registry != null) {
             registry.addMapping("/**")
                     .allowedMethods("GET", "POST", "PUT", "DELETE")
-                    .allowedOrigins("http://localhost:8000")
+                    .allowedOrigins(System.getenv("CLIENT_URL"))
         }
     }
-
-
 }

@@ -1,1 +1,2 @@
 export SPRING_DATASOURCE_URL=
+export CLIENT_URL
