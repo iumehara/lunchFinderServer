@@ -1,6 +1,10 @@
 language: java
 services: postgresql
 before_script:
-  - psql -c 'create database lunch_finder_test;' -U postgres
-  - psql lunch_finder_test -f src/main/resources/db/migrations.sql
-script: ./gradlew build
+- psql -c 'create database lunch_finder_test;' -U postgres
+- psql lunch_finder_test -f src/main/resources/db/migrations.sql
+script: "./gradlew build"
+deploy:
+  provider: heroku
+  api_key:
+    secure: eGzC/MJrZ+/qDcN8JHpWlNK6Vc29lHjLiXE53ay/xHDdc8TtV7ZMEJus6HsGFWJqwUs4K6y63mK0aFv8DVAv9miHafEn4Ilo90913T6VRb4IukrRnbJLpAvVCwps8w0TGg6uhC584pMbns1HRed4E/K+YVkNOxIYOd/+5znStZWc83IOtx3BHZecyYICsutSS8Nos6gasaRxog/H3JEaFG2BY3gFp5ztuvH75kVL+aOgAOtw7p0dQrrgDn/op5FYtdZyCy4rfTVjxfehz6nptNY+OYFdu61Y9ckD0/0W8imc8mZyCqBQfSC67q3aPsI2JHoUvc/jq3yH/dHUYIkN0mCLJRUo6SDv92kxdIXUX0U2ymEjzCKBWni2P/Rh2Mv7ph7vfKEYf/k9ExPGYjOoXNHBnip4gH2v+16J2uE/aeDuK3IANjb7wvPsmY1/j+mduwhKUWa+ZcDA6SmrVxKh3eiz3C4P1UkUHSk7h/pI8pxs+PtUIb/w7oEo26qAU2pkOkcNoYKNk1CdQKA0MkXhniTr3b5/rhXQ3UqnvkSHHpDd6QGvmMYgCXkq4qmNDtwtKy4plIqAGvdQCbipBTREozNox6qA+EJq5Wi3l8D7UvWxRgVcVuH432Nz7nSVHv/Y31vHJZNnRGXjEUDvjTASaoBoyh7NqCCaQ++7lxWbet4=
