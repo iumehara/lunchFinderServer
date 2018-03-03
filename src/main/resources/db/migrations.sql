@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS restaurants;
 CREATE TABLE restaurants (
-    id SERIAL,
+    id SERIAL UNIQUE,
     name varchar(100),
     name_jp varchar(100),
     website varchar(100),
@@ -11,6 +11,6 @@ CREATE TABLE restaurants (
 
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
-    id SERIAL,
+    id SERIAL UNIQUE,
     name varchar(100)
 );
