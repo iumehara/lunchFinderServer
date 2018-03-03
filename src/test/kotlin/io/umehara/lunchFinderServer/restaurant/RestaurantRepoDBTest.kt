@@ -59,8 +59,8 @@ class RestaurantRepoDBTest {
     @Test
     fun createPersistsNewRestaurant() {
         val restaurantModelNew = Pintokona().modelNew()
-        val createdRestaurantId = restaurantRepoDB.create(restaurantModelNew)
-
+        val createdRestaurantIdMap = restaurantRepoDB.create(restaurantModelNew)
+        val createdRestaurantId = createdRestaurantIdMap.get("id")!!
 
         val restaurants = restaurantRepoDB.all()
 
@@ -78,7 +78,9 @@ class RestaurantRepoDBTest {
 
     @Test
     fun updateUpdatesExistingRestaurant() {
-        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantIdMap = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantId = createdRestaurantIdMap.get("id")!!
+
         val editedRestaurantModelNew = RestaurantModelNew(
                 "Pintokonai",
                 "ぴんとこない",
@@ -89,7 +91,6 @@ class RestaurantRepoDBTest {
 
 
         restaurantRepoDB.update(createdRestaurantId, editedRestaurantModelNew)
-
 
         val restaurants = restaurantRepoDB.all()
         val expectedRestaurant = RestaurantModelDB(
@@ -105,7 +106,8 @@ class RestaurantRepoDBTest {
 
     @Test
     fun addCategoryAddsCategoryToRestaurant() {
-        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantIdMap = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantId = createdRestaurantIdMap.get("id")!!
 
         restaurantRepoDB.addCategory(createdRestaurantId, 33L)
 
@@ -123,7 +125,8 @@ class RestaurantRepoDBTest {
 
     @Test
     fun destroyDeletesRestaurant() {
-        val createdRestaurantId = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantIdMap = restaurantRepoDB.create(Pintokona().modelNew())
+        val createdRestaurantId = createdRestaurantIdMap.get("id")!!
 
         restaurantRepoDB.destroy(createdRestaurantId)
 

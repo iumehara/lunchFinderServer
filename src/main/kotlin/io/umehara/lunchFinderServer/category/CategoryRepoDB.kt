@@ -36,8 +36,11 @@ class CategoryRepoDB(
         return CategoryModel(category.id, category.name, restaurantModels)
     }
 
-    override fun create(categoryModelNew: CategoryModelNew): Long {
-        return categoryDataMapper.create(categoryModelNew)
+    override fun create(categoryModelNew: CategoryModelNew): HashMap<String, Long> {
+        val categoryId = categoryDataMapper.create(categoryModelNew)
+        val hashMap = HashMap<String, Long>()
+        hashMap.set("id", categoryId)
+        return hashMap
     }
 
     override fun destroy(id: Long) {

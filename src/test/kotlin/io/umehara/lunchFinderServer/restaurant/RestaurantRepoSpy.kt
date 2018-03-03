@@ -20,9 +20,11 @@ class RestaurantRepoSpy : RestaurantRepo {
 
 
     var createArgument: RestaurantModelNew? = null
-    override fun create(restaurantModelNew: RestaurantModelNew): Long {
+    override fun create(restaurantModelNew: RestaurantModelNew): HashMap<String, Long> {
         createArgument = restaurantModelNew
-        return 0L
+        val hashMap = HashMap<String, Long>()
+        hashMap.set("id", 1L)
+        return hashMap
     }
 
 

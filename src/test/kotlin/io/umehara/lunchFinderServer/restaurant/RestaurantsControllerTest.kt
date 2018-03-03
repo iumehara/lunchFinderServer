@@ -57,8 +57,10 @@ class RestaurantsControllerTest {
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(requestBody))
 
-
+        //language=json
+        val expectedJSON = "{\"id\": 1}"
         request.andExpect(status().isCreated)
+                .andExpect(content().json(expectedJSON))
         assertThat(repo.createArgument, equalTo(RestaurantModelNew(
                 "Green Asia",
                 "グリーンアジア",

@@ -18,7 +18,7 @@ class CategoriesController(val repo: CategoryRepo) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@RequestBody categoryModelNew: CategoryModelNew): Long {
+    fun create(@RequestBody categoryModelNew: CategoryModelNew): HashMap<String, Long> {
         return repo.create(categoryModelNew)
     }
 

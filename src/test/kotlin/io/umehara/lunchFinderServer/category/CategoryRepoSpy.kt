@@ -19,9 +19,11 @@ class CategoryRepoSpy : CategoryRepo {
     }
 
     var createArgument: CategoryModelNew? = null
-    override fun create(categoryModelNew: CategoryModelNew): Long {
+    override fun create(categoryModelNew: CategoryModelNew): HashMap<String, Long> {
         createArgument = categoryModelNew
-        return 1L
+        val hashMap = HashMap<String, Long>()
+        hashMap.set("id", 1)
+        return hashMap
     }
 
     var destroyArgument: Long? = null

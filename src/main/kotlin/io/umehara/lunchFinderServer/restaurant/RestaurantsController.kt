@@ -18,7 +18,7 @@ class RestaurantsController (val repo: RestaurantRepo) {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@RequestBody restaurantModelNew: RestaurantModelNew): Long {
+    fun create(@RequestBody restaurantModelNew: RestaurantModelNew): HashMap<String, Long> {
         return repo.create(restaurantModelNew)
     }
 

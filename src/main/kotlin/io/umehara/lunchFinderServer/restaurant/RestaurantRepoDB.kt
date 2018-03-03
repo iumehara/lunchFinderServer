@@ -18,8 +18,11 @@ class RestaurantRepoDB(
         return RestaurantModel(restaurant, categories)
     }
 
-    override fun create(restaurantModelNew: RestaurantModelNew): Long {
-        return restaurantDataMapper.create(restaurantModelNew)
+    override fun create(restaurantModelNew: RestaurantModelNew): HashMap<String, Long> {
+        val restaurantId = restaurantDataMapper.create(restaurantModelNew)
+        val hashMap = HashMap<String, Long>()
+        hashMap.set("id", restaurantId)
+        return hashMap
     }
 
     override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {

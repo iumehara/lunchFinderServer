@@ -57,13 +57,14 @@ class CategoryRepoDBTest {
     @Test
     fun createPersistsNewCategory() {
         val restaurantModelNew = CategoryModelNew("Green Asia")
-        val createdCategoryId = categoryRepoDB.create(restaurantModelNew)
+        val createdCategoryIdHash = categoryRepoDB.create(restaurantModelNew)
+        val categoryId = createdCategoryIdHash["id"]!!
 
 
         val categories= categoryRepoDB.all()
 
 
-        assertThat(categories[0], equalTo(CategoryModelDB(createdCategoryId, "Green Asia")))
+        assertThat(categories[0], equalTo(CategoryModelDB(categoryId, "Green Asia")))
     }
 
     @Test(expected = Exception::class)

@@ -59,9 +59,10 @@ class CategoriesControllerTest {
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(requestBody))
 
-
+        //language=json
+        val expectedJSON = "{\"id\": 1}"
         request.andExpect(status().isCreated)
-                .andExpect(content().json("1"))
+                .andExpect(content().json(expectedJSON))
         assertThat(repo.createArgument, equalTo(CategoryModelNew("Curry")))
     }
 
