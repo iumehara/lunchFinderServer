@@ -6,6 +6,10 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         restaurants.addAll(seedRestaurantDBS)
     }
 
+    fun resetSeedRestaurants() {
+        restaurants.clear()
+    }
+
     override fun all(): List<RestaurantModelDB> {
         return restaurants
     }
@@ -55,6 +59,22 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
         val restaurant = get(id)
         val categoryIds = restaurant.categoryIds.toMutableList()
         categoryIds.add(categoryId)
+
+        val restaurantModelNew = RestaurantModelNew(
+                restaurant.name,
+                restaurant.nameJp,
+                restaurant.website,
+                restaurant.geolocation,
+                categoryIds
+        )
+
+        update(id, restaurantModelNew)
+    }
+
+    override fun removeCategory(id: Long, categoryId: Long) {
+        val restaurant = get(id)
+        val categoryIds = restaurant.categoryIds.toMutableList()
+        categoryIds.remove(categoryId)
 
         val restaurantModelNew = RestaurantModelNew(
                 restaurant.name,

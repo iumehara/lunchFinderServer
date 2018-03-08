@@ -14,7 +14,7 @@ class CategoryRepoSpy : CategoryRepo {
         return CategoryModel(
                 1,
                 "Pizza",
-                listOf(Pizzakaya().model())
+                listOf(Pizzakaya().modelDB())
         )
     }
 
@@ -24,6 +24,13 @@ class CategoryRepoSpy : CategoryRepo {
         val hashMap = HashMap<String, Long>()
         hashMap.set("id", 1)
         return hashMap
+    }
+
+    var removeRestaurantArgument_id: Long? = null
+    var removeRestaurantArgument_restaurantId: Long? = null
+    override fun removeRestaurant(id: Long, restaurantId: Long) {
+        removeRestaurantArgument_id = id
+        removeRestaurantArgument_restaurantId = restaurantId
     }
 
     var destroyArgument: Long? = null

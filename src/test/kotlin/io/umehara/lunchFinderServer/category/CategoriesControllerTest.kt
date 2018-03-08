@@ -7,9 +7,7 @@ import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
@@ -67,8 +65,18 @@ class CategoriesControllerTest {
     }
 
     @Test
+    fun removeRestaurantCallsRepoWithCorrectArguments() {
+        val request = mockController.perform(delete("/categories/1/restaurants/4"))
+
+
+        request.andExpect(status().isOk)
+        assertThat(repo.removeRestaurantArgument_id, equalTo(1L))
+        assertThat(repo.removeRestaurantArgument_restaurantId, equalTo(4L))
+    }
+
+    @Test
     fun destroyCallsRepoWithCorrectArguments() {
-        val request = mockController.perform(MockMvcRequestBuilders.delete("/categories/1"))
+        val request = mockController.perform(delete("/categories/1"))
 
 
         request.andExpect(status().isOk)

@@ -3,11 +3,12 @@ package io.umehara.lunchFinderServer.category
 import io.umehara.lunchFinderServer.category.CategoryFixture.Sushi
 import io.umehara.lunchFinderServer.restaurant.RestaurantDataMapperFake
 import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Pintokona
-import io.umehara.lunchFinderServer.restaurant.RestaurantModel
+import io.umehara.lunchFinderServer.restaurant.RestaurantModelDB
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
+import java.util.Arrays.asList
 
 class CategoryRepoDBTest {
     private lateinit var categoryRepoDB: CategoryRepoDB
@@ -16,6 +17,8 @@ class CategoryRepoDBTest {
 
     @Before
     fun setUp() {
+        fakeRestaurantDataMapper.resetSeedRestaurants()
+        fakeCategoryDataMapper.resetSeedCategories()
         categoryRepoDB = CategoryRepoDB(fakeCategoryDataMapper, fakeRestaurantDataMapper)
     }
 
@@ -49,7 +52,7 @@ class CategoryRepoDBTest {
         val expectedCategory = CategoryModel(
                 4L,
                 "Sushi",
-                listOf(RestaurantModel(pintokonaModelDB, listOf(sushiModelDB)))
+                listOf(pintokonaModelDB)
         )
         assertThat(category, equalTo(expectedCategory))
     }
@@ -65,6 +68,23 @@ class CategoryRepoDBTest {
 
 
         assertThat(categories[0], equalTo(CategoryModelDB(categoryId, "Green Asia")))
+    }
+
+    @Test
+    fun removeRestaurantRemovesRelatedRestaurant() {
+        val sushiModelDB = Sushi().modelDb()
+        fakeCategoryDataMapper.setSeedCategories(listOf(sushiModelDB))
+
+        val pintokonaModelDB = Pintokona().modelDB()
+        val sushiRestaurant2= RestaurantModelDB(2, "restaurant2", "", "", null, asList(sushiModelDB.id))
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokonaModelDB, sushiRestaurant2))
+
+        categoryRepoDB.removeRestaurant(sushiModelDB.id, sushiRestaurant2.id)
+
+        val sushiCategory = categoryRepoDB.get(sushiModelDB.id)
+
+        assertThat(sushiCategory.restaurants.size, equalTo(1))
+        assertThat(sushiCategory.restaurants[0], equalTo(pintokonaModelDB))
     }
 
     @Test(expected = Exception::class)

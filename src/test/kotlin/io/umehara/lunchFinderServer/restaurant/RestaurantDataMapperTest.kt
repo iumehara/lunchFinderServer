@@ -132,6 +132,25 @@ abstract class RestaurantDataMapperTest {
     }
 
     @Test
+    fun createRemoveCategoryAndGetRestaurant() {
+        val newRestaurant = Pizzakaya().modelNew()
+        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+
+        restaurantDataMapper.removeCategory(createdRestaurantId, 1L)
+
+        val actualRestaurant = restaurantDataMapper.get(createdRestaurantId)
+        val expectedRestaurant = RestaurantModelDB(
+                createdRestaurantId,
+                "Pizzakaya",
+                "ピザカヤ",
+                "pizzakaya.com",
+                Geolocation(BigDecimal.valueOf(35.662265),BigDecimal.valueOf(139.726658)),
+                emptyList()
+        )
+        assertThat(actualRestaurant, equalTo(expectedRestaurant))
+    }
+
+    @Test
     fun createAndDeleteRestaurant() {
         val newRestaurant = Pizzakaya().modelNew()
         val createdRestaurantId = restaurantDataMapper.create(newRestaurant)

@@ -7,6 +7,10 @@ class CategoryDataMapperFake: CategoryDataMapper {
         categories.addAll(seedCategories)
     }
 
+    fun resetSeedCategories() {
+        categories.clear()
+    }
+
     override fun all(): List<CategoryModelDB> {
         return categories
     }
@@ -16,6 +20,7 @@ class CategoryDataMapperFake: CategoryDataMapper {
     }
 
     override fun get(id: Long): CategoryModelDB {
+        println("categories = ${categories}")
         val filteredCategories = categories.filter { it.id == id }
         return filteredCategories[0]
     }
