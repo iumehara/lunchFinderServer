@@ -32,6 +32,11 @@ class RestaurantsController (val repo: RestaurantRepo) {
         repo.addCategory(id, categoryId)
     }
 
+    @DeleteMapping("{id}/categories/{categoryId}")
+    fun removeCategory(@PathVariable id: Long, @PathVariable categoryId: Long) {
+        repo.removeCategory(id, categoryId)
+    }
+
     @DeleteMapping("{id}")
     fun destroy(@PathVariable id: Long) {
         repo.destroy(id)

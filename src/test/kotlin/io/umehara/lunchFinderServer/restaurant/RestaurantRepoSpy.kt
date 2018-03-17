@@ -43,6 +43,12 @@ class RestaurantRepoSpy : RestaurantRepo {
         addCategoryArgumentCategoryId = categoryId
     }
 
+    var removeCategoryArgumentId: Long? = null
+    var removeCategoryArgumentCategoryId: Long? = null
+    override fun removeCategory(id: Long, categoryId: Long) {
+        removeCategoryArgumentId = id
+        removeCategoryArgumentCategoryId = categoryId
+    }
 
     var destroyArgument: Long? = null
     override fun destroy(id: Long) {

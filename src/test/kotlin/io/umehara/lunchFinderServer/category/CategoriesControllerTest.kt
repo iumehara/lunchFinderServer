@@ -42,7 +42,7 @@ class CategoriesControllerTest {
 
 
         //language=json
-        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizza\", \n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Pizzakaya\", \"categories\": [{\"id\": 1, \"name\": \"Pizza\"}]}\n  ]\n}"
+        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizza\", \n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Pizzakaya\", \"categoryIds\": [1]}\n  ]\n}"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))

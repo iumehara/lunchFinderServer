@@ -33,6 +33,10 @@ class RestaurantRepoDB(
         restaurantDataMapper.addCategory(id, categoryId)
     }
 
+    override fun removeCategory(id: Long, categoryId: Long) {
+        restaurantDataMapper.removeCategory(id, categoryId)
+    }
+
     override fun destroy(id: Long) {
         restaurantDataMapper.destroy(id)
     }
