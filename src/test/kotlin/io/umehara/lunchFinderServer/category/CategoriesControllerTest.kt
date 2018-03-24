@@ -42,7 +42,7 @@ class CategoriesControllerTest {
 
 
         //language=json
-        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizza\", \n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Pizzakaya\", \"categoryIds\": [1]}\n  ]\n}"
+        val expectedJSON = "{\n  \"id\": 1, \n  \"name\": \"Pizza\",\n  \"restaurantCount\": 1,\n  \"restaurants\": [\n    {\"id\": 1, \"name\": \"Pizzakaya\", \"categoryIds\": [1]}\n  ]\n}"
         request
                 .andExpect(status().isOk)
                 .andExpect(content().json(expectedJSON))
@@ -70,8 +70,8 @@ class CategoriesControllerTest {
 
 
         request.andExpect(status().isOk)
-        assertThat(repo.removeRestaurantArgument_id, equalTo(1L))
-        assertThat(repo.removeRestaurantArgument_restaurantId, equalTo(4L))
+        assertThat(repo.removeRestaurantArgumentId, equalTo(1L))
+        assertThat(repo.removeRestaurantArgumentRestaurantId, equalTo(4L))
     }
 
     @Test

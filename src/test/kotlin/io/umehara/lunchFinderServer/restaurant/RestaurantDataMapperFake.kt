@@ -11,11 +11,14 @@ class RestaurantDataMapperFake: RestaurantDataMapper {
     }
 
     override fun all(): List<RestaurantModelDB> {
-        return restaurants
+        return restaurants.sortedWith(compareBy({it.name}))
     }
 
     override fun allByCategoryId(categoryId: Long): List<RestaurantModelDB> {
-        return restaurants.filter { it.categoryIds.contains(categoryId) }.toMutableList()
+        return restaurants
+                .filter { it.categoryIds.contains(categoryId) }
+                .toMutableList()
+                .sortedWith(compareBy({it.name}))
     }
 
     override fun get(id: Long): RestaurantModelDB {

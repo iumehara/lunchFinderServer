@@ -52,6 +52,7 @@ class CategoryRepoDBTest {
         val expectedCategory = CategoryModel(
                 4L,
                 "Sushi",
+                0L,
                 listOf(pintokonaModelDB)
         )
         assertThat(category, equalTo(expectedCategory))
@@ -72,18 +73,19 @@ class CategoryRepoDBTest {
 
     @Test
     fun removeRestaurantRemovesRelatedRestaurant() {
-        val sushiModelDB = Sushi().modelDb()
+        val sushiModelDB = Sushi(1, 2).modelDb()
         fakeCategoryDataMapper.setSeedCategories(listOf(sushiModelDB))
 
-        val pintokonaModelDB = Pintokona().modelDB()
-        val sushiRestaurant2= RestaurantModelDB(2, "restaurant2", "", "", null, asList(sushiModelDB.id))
-        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokonaModelDB, sushiRestaurant2))
+        val pintokonaModelDB = Pintokona(1, asList(sushiModelDB.id)).modelDB()
+        val kuraModelDB = RestaurantModelDB(2, "kura", "", "", null, asList(sushiModelDB.id))
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(pintokonaModelDB, kuraModelDB))
 
-        categoryRepoDB.removeRestaurant(sushiModelDB.id, sushiRestaurant2.id)
-
+        categoryRepoDB.removeRestaurant(sushiModelDB.id, kuraModelDB.id)
         val sushiCategory = categoryRepoDB.get(sushiModelDB.id)
 
+
         assertThat(sushiCategory.restaurants.size, equalTo(1))
+        assertThat(sushiCategory.restaurantCount, equalTo(1L))
         assertThat(sushiCategory.restaurants[0], equalTo(pintokonaModelDB))
     }
 

@@ -10,7 +10,9 @@ import java.sql.ResultSet
 @Repository
 class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper {
     override fun all(): List<CategoryModelDB> {
-        val sql = "SELECT * FROM categories"
+        val sql = "SELECT * " +
+                "FROM categories " +
+                "ORDER BY restaurant_count DESC"
         return jdbcTemplate.query(
                 sql,
                 { rs, _ -> categoryRowMapper(rs) }
@@ -23,7 +25,10 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         }
 
         val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
-        val sql = "SELECT * FROM categories WHERE id in (:ids)"
+        val sql = "SELECT * " +
+                "FROM categories " +
+                "WHERE id in (:ids) " +
+                "ORDER BY restaurant_count DESC"
         val paramSource = MapSqlParameterSource().addValue("ids", ids)
 
         return namedParameterJdbcTemplate.query(
@@ -46,11 +51,28 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
     override fun create(categoryModelNew: CategoryModelNew): Long {
         val simpleJdbcInsert = SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("categories")
+
                 .usingGeneratedKeyColumns("id")
 
-        val parameterSource = mutableMapOf("name" to categoryModelNew.name)
+        val parameterSource = MapSqlParameterSource()
+        parameterSource.addValue("name", categoryModelNew.name)
+        parameterSource.addValue("restaurant_count", 0)
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
+    }
+
+    override fun increment(id: Long) {
+        val sql = "UPDATE categories " +
+                "SET restaurant_count = restaurant_count + 1 " +
+                "WHERE id = ?"
+        jdbcTemplate.update(sql, id)
+    }
+
+    override fun decrement(id: Long) {
+        val sql = "UPDATE categories " +
+                "SET restaurant_count = restaurant_count - 1 " +
+                "WHERE id = ?"
+        jdbcTemplate.update(sql, id)
     }
 
     override fun destroy(id: Long) {
@@ -59,6 +81,10 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
     }
 
     private fun categoryRowMapper(rs: ResultSet): CategoryModelDB {
-        return CategoryModelDB(rs.getLong("id"), rs.getString("name"))
+        return CategoryModelDB(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getLong("restaurant_count")
+        )
     }
 }

@@ -2,42 +2,75 @@ package io.umehara.lunchFinderServer.restaurant
 
 import io.umehara.lunchFinderServer.category.CategoryDataMapper
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
+import java.util.Arrays.asList
 
 @Repository
 class RestaurantRepoDB(
-        val restaurantDataMapper: RestaurantDataMapper,
+        val dataMapper: RestaurantDataMapper,
         val categoryDataMapper: CategoryDataMapper
 ): RestaurantRepo {
     override fun all(): List<RestaurantModelDB> {
-        return restaurantDataMapper.all()
+        return dataMapper.all()
     }
 
     override fun get(id: Long): RestaurantModel {
-        val restaurant = restaurantDataMapper.get(id)
+        val restaurant = dataMapper.get(id)
         val categories = categoryDataMapper.where(restaurant.categoryIds)
         return RestaurantModel(restaurant, categories)
     }
 
+    @Transactional
     override fun create(restaurantModelNew: RestaurantModelNew): HashMap<String, Long> {
-        val restaurantId = restaurantDataMapper.create(restaurantModelNew)
+        val restaurantId = dataMapper.create(restaurantModelNew)
+        updateNewCategoryIds(restaurantId, restaurantModelNew.categoryIds)
         val hashMap = HashMap<String, Long>()
-        hashMap.set("id", restaurantId)
+        hashMap["id"] = restaurantId
         return hashMap
     }
 
+    @Transactional
     override fun update(id: Long, restaurantModelNew: RestaurantModelNew) {
-        restaurantDataMapper.update(id, restaurantModelNew)
+        updateNewCategoryIds(id, restaurantModelNew.categoryIds)
+        dataMapper.update(id, restaurantModelNew)
     }
 
+    @Transactional
     override fun addCategory(id: Long, categoryId: Long) {
-        restaurantDataMapper.addCategory(id, categoryId)
+        dataMapper.addCategory(id, categoryId)
+        updateNewCategoryIds(id, asList(categoryId))
     }
 
+    @Transactional
     override fun removeCategory(id: Long, categoryId: Long) {
-        restaurantDataMapper.removeCategory(id, categoryId)
+        dataMapper.removeCategory(id, categoryId)
+        updateNewCategoryIds(id, asList(categoryId))
     }
 
     override fun destroy(id: Long) {
-        restaurantDataMapper.destroy(id)
+        updateNewCategoryIds(id, emptyList())
+        dataMapper.destroy(id)
+    }
+
+    fun updateNewCategoryIds(id: Long, updatedCategoryIds: List<Long>) {
+        val restaurantToUpdate = dataMapper.get(id)
+        val currentCategoryIds = restaurantToUpdate.categoryIds
+        val addedCategoryIds = updatedCategoryIds.filter { !currentCategoryIds.contains(it) }.toList()
+        val removedCategoryIds = currentCategoryIds.filter { !updatedCategoryIds.contains(it) }.toList()
+
+        incrementCategories(addedCategoryIds)
+        decrementCategories(removedCategoryIds)
+    }
+
+    private fun incrementCategories(categoryIds: List<Long>) {
+        for (categoryId in categoryIds) {
+            categoryDataMapper.increment(categoryId)
+        }
+    }
+
+    private fun decrementCategories(categoryIds: List<Long>) {
+        for (categoryId in categoryIds) {
+            categoryDataMapper.decrement(categoryId)
+        }
     }
 }

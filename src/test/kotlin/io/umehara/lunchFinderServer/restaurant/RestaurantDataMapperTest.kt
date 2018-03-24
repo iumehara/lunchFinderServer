@@ -1,6 +1,5 @@
 package io.umehara.lunchFinderServer.restaurant
 
-import io.umehara.lunchFinderServer.category.CategoryFixture.*
 import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -25,52 +24,62 @@ abstract class RestaurantDataMapperTest {
     }
 
     @Test
+    fun allReturnsRestaurants() {
+        restaurantDataMapper.create(Pizzakaya(categoryIds = listOf(1)).modelNew())
+        restaurantDataMapper.create(Moti(categoryIds = listOf(1, 2)).modelNew())
+        restaurantDataMapper.create(Pintokona(categoryIds = listOf(2, 3)).modelNew())
+
+
+        val restaurants = restaurantDataMapper.all()
+
+
+        assertThat(restaurants.size, equalTo(3))
+        assertThat(restaurants[0].name, equalTo("Moti"))
+        assertThat(restaurants[1].name, equalTo("Pintokona"))
+        assertThat(restaurants[2].name, equalTo("Pizzakaya"))
+    }
+
+
+    @Test
     fun allByCategoryIdReturnsRestaurants() {
-        val spicy = Spicy().modelDb()
-        val curry = Curry().modelDb()
-        val sushi = Sushi().modelDb()
-        restaurantDataMapper.create(Pizzakaya(categories = listOf(spicy)).modelNew())
-        restaurantDataMapper.create(Moti(categories = listOf(spicy, curry)).modelNew())
-        restaurantDataMapper.create(Pintokona(categories = listOf(sushi)).modelNew())
+        restaurantDataMapper.create(Pizzakaya(categoryIds = listOf(1)).modelNew())
+        restaurantDataMapper.create(Moti(categoryIds = listOf(1, 2)).modelNew())
+        restaurantDataMapper.create(Pintokona(categoryIds = listOf(2, 3)).modelNew())
 
 
-        val restaurants = restaurantDataMapper.allByCategoryId(spicy.id)
+        val restaurants = restaurantDataMapper.allByCategoryId(1)
 
 
         assertThat(restaurants.size, equalTo(2))
-        assertThat(restaurants[0].name, equalTo("Pizzakaya"))
-        assertThat(restaurants[1].name, equalTo("Moti"))
+        assertThat(restaurants[0].name, equalTo("Moti"))
+        assertThat(restaurants[1].name, equalTo("Pizzakaya"))
     }
 
     @Test
-    fun createAndGetOneRestaurant() {
-        val restaurantId = restaurantDataMapper.create(Pintokona().modelNew())
+    fun getOneRestaurant() {
+        val restaurantModelNew = Pintokona().modelNew()
+        val pintokonaId = restaurantDataMapper.create(restaurantModelNew)
+        restaurantDataMapper.create(Pizzakaya().modelNew())
 
 
-        val actualRestaurant = restaurantDataMapper.get(restaurantId)
+        val actualRestaurant = restaurantDataMapper.get(pintokonaId)
 
 
-        val expectedRestaurant = RestaurantModelDB(restaurantId, "Pintokona", "ぴんとこな", null, null, listOf(4L))
+        val expectedRestaurant = Pintokona(id = pintokonaId).modelDB()
         assertThat(actualRestaurant, equalTo(expectedRestaurant))
     }
 
     @Test
-    fun createAndGetMultipleRestaurants() {
-        restaurantDataMapper.create(Pizzakaya().modelNew())
-        restaurantDataMapper.create(Moti().modelNew())
+    fun updateAndGetRestaurant() {
+        val newRestaurant = RestaurantModelNew(
+                "Pizzakaya",
+                "ピザカヤ",
+                "pizzakaya.com",
+                Geolocation(BigDecimal.valueOf(1),BigDecimal.valueOf(1)),
+                listOf(1L)
+        )
 
-
-        val restaurants = restaurantDataMapper.all()
-        assertThat(restaurants.size, equalTo(2))
-        val geolocation = Geolocation(BigDecimal.valueOf(35.662265), BigDecimal.valueOf(139.726658))
-        assertThat(restaurants[0], equalTo(RestaurantModelDB(1, "Pizzakaya", "ピザカヤ", "pizzakaya.com", geolocation, listOf(1L))))
-        assertThat(restaurants[1], equalTo(RestaurantModelDB(2, "Moti", "モティ",null,null, listOf(3L, 2L))))
-    }
-
-    @Test
-    fun createUpdateAndGetRestaurant() {
-        val newRestaurant = Pizzakaya().modelNew()
-        val createdRestaurantId = restaurantDataMapper.create(newRestaurant)
+        val pizzakayaId = restaurantDataMapper.create(newRestaurant)
 
         val editedRestaurant = RestaurantModelNew(
                 "Pizzakaya2",
@@ -79,16 +88,16 @@ abstract class RestaurantDataMapperTest {
                 Geolocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
                 listOf(99L)
         )
-        restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
+        restaurantDataMapper.update(pizzakayaId, editedRestaurant)
 
-        val restaurant = restaurantDataMapper.get(createdRestaurantId)
+        val restaurant = restaurantDataMapper.get(pizzakayaId)
         val expectedRestaurant = RestaurantModelDB(
-                createdRestaurantId,
-                "Pizzakaya2",
-                "ピザカヤ２",
-                "pizzakaya2.com",
-                Geolocation(BigDecimal.valueOf(99),BigDecimal.valueOf(99)),
-                listOf(99L)
+                pizzakayaId,
+                editedRestaurant.name,
+                editedRestaurant.nameJp,
+                editedRestaurant.website,
+                editedRestaurant.geolocation,
+                editedRestaurant.categoryIds
         )
         assertThat(restaurant, equalTo(expectedRestaurant))
     }

@@ -12,5 +12,6 @@ CREATE TABLE restaurants (
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
     id SERIAL UNIQUE,
-    name varchar(100)
+    name varchar(100),
+    restaurant_count bigint DEFAULT 0
 );

@@ -20,7 +20,6 @@ class CategoryDataMapperFake: CategoryDataMapper {
     }
 
     override fun get(id: Long): CategoryModelDB {
-        println("categories = ${categories}")
         val filteredCategories = categories.filter { it.id == id }
         return filteredCategories[0]
     }
@@ -29,6 +28,26 @@ class CategoryDataMapperFake: CategoryDataMapper {
         val id = categories.size + 1L
         categories.add(CategoryModelDB(id, categoryModelNew.name))
         return id
+    }
+
+    override fun increment(id: Long) {
+        categories = categories.map {
+            if (it.id == id) {
+                 CategoryModelDB(it.id, it.name, it.restaurantCount + 1)
+            } else {
+                it
+            }
+        }.toMutableList()
+    }
+
+    override fun decrement(id: Long) {
+        categories = categories.map {
+            if (it.id == id) {
+                CategoryModelDB(it.id, it.name, it.restaurantCount - 1)
+            } else {
+                it
+            }
+        }.toMutableList()
     }
 
     override fun destroy(id: Long) {

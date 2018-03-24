@@ -23,18 +23,6 @@ abstract class CategoryDataMapperTest {
     }
 
     @Test
-    fun createAndGetOneCategory() {
-        val categoryModelNew = CategoryModelNew("Curry")
-        categoryDataMapper.create(categoryModelNew)
-
-
-        val category = categoryDataMapper.get(1L)
-
-
-        assertThat(category, equalTo(CategoryModelDB(1, "Curry")))
-    }
-
-    @Test
     fun createAndGetAllCategories() {
         val category1 = CategoryModelNew("Curry")
         categoryDataMapper.create(category1)
@@ -74,6 +62,34 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(0))
+    }
+
+    @Test
+    fun createAndGetOneCategory() {
+        val categoryModelNew = CategoryModelNew("Curry")
+        categoryDataMapper.create(categoryModelNew)
+
+
+        val category = categoryDataMapper.get(1L)
+
+
+        assertThat(category, equalTo(CategoryModelDB(1, "Curry")))
+    }
+
+    @Test
+    fun createIncrementAndDecrementCategory() {
+        val categoryModelNew = CategoryModelNew("Curry")
+        val categoryId = categoryDataMapper.create(categoryModelNew)
+
+
+        categoryDataMapper.increment(categoryId)
+        categoryDataMapper.increment(categoryId)
+        categoryDataMapper.increment(categoryId)
+        categoryDataMapper.decrement(categoryId)
+        val category = categoryDataMapper.get(categoryId)
+
+
+        assertThat(category.restaurantCount, equalTo(2L))
     }
 
     @Test

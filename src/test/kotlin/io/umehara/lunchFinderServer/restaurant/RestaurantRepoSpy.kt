@@ -8,11 +8,10 @@ import io.umehara.lunchFinderServer.restaurant.RestaurantFixture.Pizzakaya
 class RestaurantRepoSpy : RestaurantRepo {
     override fun all(): List<RestaurantModelDB> {
         return listOf(
-                Pizzakaya(categories = listOf(Pizza().modelDb())).modelDB(),
-                Moti(categories = listOf(Spicy().modelDb())).modelDB()
+                Pizzakaya(categoryIds = listOf(Pizza().id)).modelDB(),
+                Moti(categoryIds = listOf(Spicy().id)).modelDB()
         )
     }
-
 
     override fun get(id: Long): RestaurantModel {
         return Pizzakaya(categories = listOf(Pizza().modelDb())).model()
@@ -23,7 +22,7 @@ class RestaurantRepoSpy : RestaurantRepo {
     override fun create(restaurantModelNew: RestaurantModelNew): HashMap<String, Long> {
         createArgument = restaurantModelNew
         val hashMap = HashMap<String, Long>()
-        hashMap.set("id", 1L)
+        hashMap["id"] = 1L
         return hashMap
     }
 

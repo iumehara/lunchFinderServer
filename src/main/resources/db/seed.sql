@@ -1,9 +1,9 @@
-INSERT INTO categories (name) VALUES ('Sushi');
-INSERT INTO categories (name) VALUES ('Pizza');
-INSERT INTO categories (name) VALUES ('Spicy');
-INSERT INTO categories (name) VALUES ('Curry');
-INSERT INTO categories (name) VALUES ('Southeast Asia');
-INSERT INTO categories (name) VALUES ('Meat');
+INSERT INTO categories (name, restaurant_count) VALUES ('Sushi', 1);
+INSERT INTO categories (name, restaurant_count) VALUES ('Pizza', 1);
+INSERT INTO categories (name, restaurant_count) VALUES ('Spicy', 4);
+INSERT INTO categories (name, restaurant_count) VALUES ('Curry', 2);
+INSERT INTO categories (name, restaurant_count) VALUES ('Southeast Asia', 1);
+INSERT INTO categories (name, restaurant_count) VALUES ('Meat', 2);
 
 
 INSERT INTO restaurants (name, name_jp, website, geo_lat, geo_long, category_ids) VALUES ('Pizzakaya', 'ピザカヤ', 'pizzakaya.com', 35.660563, 139.726685, '{2,3}');

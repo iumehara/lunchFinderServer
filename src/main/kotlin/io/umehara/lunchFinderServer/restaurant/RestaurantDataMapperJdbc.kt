@@ -12,7 +12,9 @@ import java.util.Arrays.asList
 @Repository
 class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMapper {
     override fun all(): List<RestaurantModelDB> {
-        val sql = "SELECT * FROM restaurants"
+        val sql = "SELECT * " +
+                "FROM restaurants " +
+                "ORDER BY name"
         return jdbcTemplate.query(
                 sql,
                 { rs, _ -> restaurantRowMapper(rs) }
@@ -20,7 +22,10 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
     }
 
     override fun allByCategoryId(categoryId: Long): List<RestaurantModelDB> {
-        val sql = "SELECT * FROM restaurants WHERE ? = ANY (category_ids)"
+        val sql = "SELECT * " +
+                "FROM restaurants " +
+                "WHERE ? = ANY (category_ids) " +
+                "ORDER BY name"
         return jdbcTemplate.query(
                 sql,
                 { rs, _ -> restaurantRowMapper(rs) },
