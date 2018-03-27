@@ -1,3 +1,4 @@
 ---
 applications:
 - name: lunch-finder-api
+  path: ./build/libs/lunchFinderServer-0.0.1-SNAPSHOT.jar
