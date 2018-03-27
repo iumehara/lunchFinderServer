@@ -1,13 +1,17 @@
 language: java
 services: postgresql
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 before_script:
 - psql -c 'create database lunch_finder_test;' -U postgres
 - psql lunch_finder_test -f src/main/resources/db/migrations.sql
 script: "./gradlew build"
 deploy:
-  provider: heroku
-  app: tokyo-lunch-finder-server
-  api_key:
-    secure: eGzC/MJrZ+/qDcN8JHpWlNK6Vc29lHjLiXE53ay/xHDdc8TtV7ZMEJus6HsGFWJqwUs4K6y63mK0aFv8DVAv9miHafEn4Ilo90913T6VRb4IukrRnbJLpAvVCwps8w0TGg6uhC584pMbns1HRed4E/K+YVkNOxIYOd/+5znStZWc83IOtx3BHZecyYICsutSS8Nos6gasaRxog/H3JEaFG2BY3gFp5ztuvH75kVL+aOgAOtw7p0dQrrgDn/op5FYtdZyCy4rfTVjxfehz6nptNY+OYFdu61Y9ckD0/0W8imc8mZyCqBQfSC67q3aPsI2JHoUvc/jq3yH/dHUYIkN0mCLJRUo6SDv92kxdIXUX0U2ymEjzCKBWni2P/Rh2Mv7ph7vfKEYf/k9ExPGYjOoXNHBnip4gH2v+16J2uE/aeDuK3IANjb7wvPsmY1/j+mduwhKUWa+ZcDA6SmrVxKh3eiz3C4P1UkUHSk7h/pI8pxs+PtUIb/w7oEo26qAU2pkOkcNoYKNk1CdQKA0MkXhniTr3b5/rhXQ3UqnvkSHHpDd6QGvmMYgCXkq4qmNDtwtKy4plIqAGvdQCbipBTREozNox6qA+EJq5Wi3l8D7UvWxRgVcVuH432Nz7nSVHv/Y31vHJZNnRGXjEUDvjTASaoBoyh7NqCCaQ++7lxWbet4=
+  provider: cloudfoundry
+  username: iumehara
+  api: https://api.run.pivotal.io
+  organization: labs-tokyo
+  space: beach
+  app: lunch-finder-api
+  password:
+    secure: LP2fgxMipKKYrxUNWy2UPG4V93yXZlQ07CNyZ2+gAZhRokqu9CfWpZowPAfT1j7YyyvuIIkrQts1R6YzhCp33+GvEi9aMjT4QFJgiiPTdPRv0jyEi3dqH4I3Xfa1QPYZ/TVZJbLUZEb64WR/RAvYmqce0l9ndlDvei/A7YMWgLVK80aeeKXLauKOqxrcpEaTvT0uznrDP3FrKJu490YbSnXmkfJJg6EY8Emr6yr1qzVxQ1/CDB8xxLxL+4+THXMAlmk8zLWFkVrRt/oYlbYGrKtzD+yF728N4U45k92u/JouFE0KnGWtv/vBQgIA7WvoVoZeq4WyMkQhw8q8Dmd+3q8USC44nSNZojPo7/NTZ5A6/1X8hV15ngfRgcr3rBg209GqATgoSmFz2jgPX+qpr/yr8ViNxhM92l8AInxu0KouFttdIielzBy6NmvmCkeAKnEo2i9i1xX1y/mNQOZPcGw6N9qgRDDYz6FhWDMxRn3NR30Adklezt9f7vAXH14dY/wOd460+jG8nwP2MsIUggV7j2IbSH5UJeGogPYfOEbNrMtvg30IfTbEbtZBa+VSvdSuV0KxUf9y1aCY7yJhfOGX+IMeVNQ1Y9wjwM4YsndmsOggX10MkxI1fQcDFmAthl8bbgpV3qS0J2myuadwbJ3qU4F9nwzStMIqIrnMSVw=
