@@ -38,7 +38,7 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         )
     }
 
-    override fun get(id: Long): CategoryModelDB {
+    override fun get(id: Long): CategoryModelDB? {
         val sql = "SELECT * FROM categories WHERE id=?"
 
         return jdbcTemplate.queryForObject(

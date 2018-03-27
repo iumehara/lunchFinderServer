@@ -117,7 +117,7 @@ abstract class RestaurantDataMapperTest {
         restaurantDataMapper.update(createdRestaurantId, editedRestaurant)
 
         val restaurant = restaurantDataMapper.get(createdRestaurantId)
-        assertNotNull(restaurant.website)
+        assertNotNull(restaurant!!.website)
         assertNotNull(restaurant.geolocation)
     }
 

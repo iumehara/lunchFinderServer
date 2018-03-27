@@ -33,7 +33,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         )
     }
 
-    override fun get(id: Long): RestaurantModelDB {
+    override fun get(id: Long): RestaurantModelDB? {
         val sql = "SELECT * FROM restaurants WHERE id=" + id.toString()
 
         return jdbcTemplate.queryForObject(
@@ -50,10 +50,21 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
         parameterSource.addValue("name_jp", restaurantModelNew.nameJp)
-        parameterSource.addValue("website", restaurantModelNew.website)
-        parameterSource.addValue("geo_lat", restaurantModelNew.geolocation?.lat)
-        parameterSource.addValue("geo_long", restaurantModelNew.geolocation?.long)
-        parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
+
+        if (restaurantModelNew.website != null) {
+            parameterSource.addValue("website", restaurantModelNew.website)
+        }
+
+        if (restaurantModelNew.geolocation != null) {
+            parameterSource.addValue("geo_lat", restaurantModelNew.geolocation.lat)
+            parameterSource.addValue("geo_long", restaurantModelNew.geolocation.long)
+        }
+
+        restaurantModelNew.categoryIds.let { categoryIds ->
+            (kotlinListToSqlArray(categoryIds) as java.sql.Array).let { categoryIdsSqlArray ->
+                parameterSource.addValue("category_ids", categoryIdsSqlArray)
+            }
+        }
 
         return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
     }
@@ -63,7 +74,6 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
                 "SET name=:name, " +
                 "name_jp=:name_jp, " +
                 "category_ids=:category_ids"
-
 
         val parameterSource = MapSqlParameterSource()
         parameterSource.addValue("name", restaurantModelNew.name)
@@ -80,7 +90,12 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
             parameterSource.addValue("geo_long", restaurantModelNew.geolocation.long)
         }
 
-        parameterSource.addValue("category_ids", kotlinListToSqlArray(restaurantModelNew.categoryIds))
+        restaurantModelNew.categoryIds.let { categoryIds ->
+            (kotlinListToSqlArray(categoryIds) as java.sql.Array).let { categoryIdsSqlArray ->
+                parameterSource.addValue("category_ids", categoryIdsSqlArray)
+            }
+        }
+
         parameterSource.addValue("id", id)
 
         val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
@@ -128,7 +143,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
     }
 
     override fun destroy(id: Long) {
-        val sql = "DELETE FROM restaurants WHERE id = ?"
+        val sql = "DELETE FROM restaurants WHERE id=?"
         jdbcTemplate.update(sql, id)
     }
 
@@ -148,7 +163,7 @@ class RestaurantDataMapperJdbc(val jdbcTemplate: JdbcTemplate): RestaurantDataMa
 
     private fun kotlinListToSqlArray(kotlinList: List<Long>): java.sql.Array? {
         val kotlinArray = kotlinList.toTypedArray()
-        return jdbcTemplate.dataSource.connection.createArrayOf("INT", kotlinArray)
+        return jdbcTemplate.dataSource?.connection?.createArrayOf("INT", kotlinArray)
     }
 
     private fun sqlArrayToKotlinList(sqlArray: java.sql.Array): List<Long> {

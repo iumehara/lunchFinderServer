@@ -89,7 +89,7 @@ abstract class CategoryDataMapperTest {
         val category = categoryDataMapper.get(categoryId)
 
 
-        assertThat(category.restaurantCount, equalTo(2L))
+        assertThat(category!!.restaurantCount, equalTo(2L))
     }
 
     @Test

@@ -13,7 +13,7 @@ class CategoryDataMapperJdbcTest: CategoryDataMapperTest() {
 
     private fun initializeJdbcTemplate(): JdbcTemplate {
         val dataSource = PGSimpleDataSource()
-        dataSource.url = "jdbc:postgresql://localhost/lunch_finder_test"
+        dataSource.setURL("jdbc:postgresql://localhost/lunch_finder_test")
         val jdbcTemplate = JdbcTemplate(dataSource)
         jdbcTemplate.update("TRUNCATE categories RESTART IDENTITY")
         return jdbcTemplate

@@ -15,7 +15,7 @@ class RestaurantRepoDB(
     }
 
     override fun get(id: Long): RestaurantModel {
-        val restaurant = dataMapper.get(id)
+        val restaurant = dataMapper.get(id) ?: throw Exception("No restaurant for id: $id")
         val categories = categoryDataMapper.where(restaurant.categoryIds)
         return RestaurantModel(restaurant, categories)
     }
@@ -53,7 +53,7 @@ class RestaurantRepoDB(
     }
 
     fun updateNewCategoryIds(id: Long, updatedCategoryIds: List<Long>) {
-        val restaurantToUpdate = dataMapper.get(id)
+        val restaurantToUpdate = dataMapper.get(id) ?: throw Exception("No restaurant for id: $id")
         val currentCategoryIds = restaurantToUpdate.categoryIds
         val addedCategoryIds = updatedCategoryIds.filter { !currentCategoryIds.contains(it) }.toList()
         val removedCategoryIds = currentCategoryIds.filter { !updatedCategoryIds.contains(it) }.toList()

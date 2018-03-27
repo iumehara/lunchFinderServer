@@ -15,7 +15,8 @@ class CategoryRepoDB(
     }
 
     override fun get(id: Long): CategoryModel {
-        val category = dataMapper.get(id)
+        val category = dataMapper.get(id) ?: throw Exception("No category for id: $id")
+
         val restaurantModelDBs = restaurantDataMapper.allByCategoryId(id)
         val restaurantModels = restaurantModelDBs.map {
             RestaurantModelDB(
