@@ -1,6 +1,9 @@
 # Lunch Finder Server
 
 Provides API endpoints with Lunch Finder data for client apps
+- [Web](https://github.com/iumehara/lunchFinderWeb)
+- [iOS](https://github.com/iumehara/lunchFinderIOS)
+- [Android](https://github.com/iumehara/lunchFinderAndroid)
 
 ### Dependencies
 - Java 8
