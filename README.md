@@ -1,5 +1,7 @@
 # Lunch Finder Server
 
+[![Build Status](https://travis-ci.org/iumehara/lunchFinderServer.svg?branch=master)](https://travis-ci.org/iumehara/lunchFinderServer)
+
 Provides API endpoints with Lunch Finder data for client apps
 - [Web](https://github.com/iumehara/lunchFinderWeb)
 - [iOS](https://github.com/iumehara/lunchFinderIOS)
