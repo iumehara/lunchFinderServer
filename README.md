@@ -2,11 +2,11 @@
 
 Provides API endpoints with Lunch Finder data for client apps
 
-###Dependencies
+### Dependencies
 - Java 8
 - Postgres
 
-###Getting Started
+### Getting Started
 - Setup local Postgres DB
     - `createdb lunch_finder_dev`
     - `psql -d lunch_finder_dev -f ./src/main/resources/db/migrations.sql`
