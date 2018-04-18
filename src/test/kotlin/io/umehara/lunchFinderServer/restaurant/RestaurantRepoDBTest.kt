@@ -36,6 +36,22 @@ class RestaurantRepoDBTest {
     }
 
     @Test
+    fun whereReturnsRestaurants() {
+        val testCategory  = 1L;
+        val restaurant1 = RestaurantModelDB(1L, "first", "firstJp", null, null, asList(testCategory))
+        val restaurant2 = RestaurantModelDB(2L, "second", "secondJp", null, null, asList(testCategory))
+        val restaurant3 = RestaurantModelDB(2L, "third", "thirdJp", null, null, asList(testCategory + 1))
+
+        fakeRestaurantDataMapper.setSeedRestaurants(listOf(restaurant1, restaurant2, restaurant3))
+
+
+        val restaurants = restaurantRepoDB.where(testCategory)
+
+
+        assertThat(restaurants.size, equalTo(2))
+    }
+
+    @Test
     fun getReturnsRestaurant() {
         val pizzakaya = Pizzakaya().modelDB()
         fakeRestaurantDataMapper.setSeedRestaurants(listOf(pizzakaya))

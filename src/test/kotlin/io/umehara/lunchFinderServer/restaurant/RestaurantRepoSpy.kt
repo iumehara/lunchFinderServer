@@ -13,6 +13,15 @@ class RestaurantRepoSpy : RestaurantRepo {
         )
     }
 
+    var whereArgument: Long? = null
+    override fun where(categoryId: Long): List<RestaurantModelDB> {
+        whereArgument = categoryId
+        return listOf(
+                Pizzakaya(categoryIds = listOf(Pizza().id)).modelDB(),
+                Moti(categoryIds = listOf(Spicy().id)).modelDB()
+        )
+    }
+
     override fun get(id: Long): RestaurantModel {
         return Pizzakaya(categories = listOf(Pizza().modelDb())).model()
     }

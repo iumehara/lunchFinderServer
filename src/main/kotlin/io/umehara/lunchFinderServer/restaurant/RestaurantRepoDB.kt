@@ -14,6 +14,10 @@ class RestaurantRepoDB(
         return dataMapper.all()
     }
 
+    override fun where(categoryId: Long): List<RestaurantModelDB> {
+        return dataMapper.allByCategoryId(categoryId)
+    }
+
     override fun get(id: Long): RestaurantModel {
         val restaurant = dataMapper.get(id) ?: throw Exception("No restaurant for id: $id")
         val categories = categoryDataMapper.where(restaurant.categoryIds)
