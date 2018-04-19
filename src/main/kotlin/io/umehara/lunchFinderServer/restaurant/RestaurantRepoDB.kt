@@ -42,13 +42,13 @@ class RestaurantRepoDB(
     @Transactional
     override fun addCategory(id: Long, categoryId: Long) {
         dataMapper.addCategory(id, categoryId)
-        updateNewCategoryIds(id, asList(categoryId))
+        categoryDataMapper.increment(categoryId)
     }
 
     @Transactional
     override fun removeCategory(id: Long, categoryId: Long) {
         dataMapper.removeCategory(id, categoryId)
-        updateNewCategoryIds(id, asList(categoryId))
+        categoryDataMapper.decrement(categoryId)
     }
 
     override fun destroy(id: Long) {

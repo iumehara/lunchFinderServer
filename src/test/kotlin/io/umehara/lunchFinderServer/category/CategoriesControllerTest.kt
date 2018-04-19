@@ -65,16 +65,6 @@ class CategoriesControllerTest {
     }
 
     @Test
-    fun removeRestaurantCallsRepoWithCorrectArguments() {
-        val request = mockController.perform(delete("/categories/1/restaurants/4"))
-
-
-        request.andExpect(status().isOk)
-        assertThat(repo.removeRestaurantArgumentId, equalTo(1L))
-        assertThat(repo.removeRestaurantArgumentRestaurantId, equalTo(4L))
-    }
-
-    @Test
     fun destroyCallsRepoWithCorrectArguments() {
         val request = mockController.perform(delete("/categories/1"))
 

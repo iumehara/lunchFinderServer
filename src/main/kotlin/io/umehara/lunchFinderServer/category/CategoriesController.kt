@@ -1,7 +1,6 @@
 package io.umehara.lunchFinderServer.category
 
 import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.OK
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -21,12 +20,6 @@ class CategoriesController(val repo: CategoryRepo) {
     @ResponseStatus(CREATED)
     fun create(@RequestBody categoryModelNew: CategoryModelNew): HashMap<String, Long> {
         return repo.create(categoryModelNew)
-    }
-
-    @DeleteMapping("{id}/restaurants/{restaurantId}")
-    @ResponseStatus(OK)
-    fun removeRestaurant(@PathVariable id: Long, @PathVariable restaurantId: Long) {
-        repo.removeRestaurant(id, restaurantId)
     }
 
     @DeleteMapping("{id}")
