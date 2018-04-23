@@ -1,4 +1,4 @@
-# Lunch Finder Server
+this is a tes!!# Lunch Finder Server
 
 [![Build Status](https://travis-ci.org/iumehara/lunchFinderServer.svg?branch=master)](https://travis-ci.org/iumehara/lunchFinderServer)
 
@@ -18,7 +18,7 @@ Provides API endpoints with Lunch Finder data for client apps
     - `psql -d lunch_finder_dev -f ./src/main/resources/db/seed.sql`
     - `createdb lunch_finder_test`
     - `psql -d lunch_finder_test -f ./src/main/resources/db/migrations.sql`
-    
+
 - Setup .env file
     - `cp .envSample .env` then set the env vars for local environment
         - `export SPRING_DATASOURCE_URL='jdbc:postgresql://localhost:5432/lunch_finder_dev'`
