@@ -1,5 +1,9 @@
 package io.umehara.lunchFinderServer.category
 
+import io.umehara.lunchFinderServer.restutils.BadRequestException
+import io.umehara.lunchFinderServer.restutils.ExceptionMessage
+import org.springframework.dao.DuplicateKeyException
+
 class CategoryDataMapperFake: CategoryDataMapper {
     private var categories = mutableListOf<CategoryModelDB>()
 
@@ -26,6 +30,13 @@ class CategoryDataMapperFake: CategoryDataMapper {
 
     override fun create(categoryModelNew: CategoryModelNew): Long {
         val id = categories.size + 1L
+
+        categories.forEach { category ->
+            if (category.name.equals(categoryModelNew.name)) {
+                throw BadRequestException(ExceptionMessage.DUPLICATE_KEY_EXCEPTION)
+            }
+        }
+
         categories.add(CategoryModelDB(id, categoryModelNew.name))
         return id
     }

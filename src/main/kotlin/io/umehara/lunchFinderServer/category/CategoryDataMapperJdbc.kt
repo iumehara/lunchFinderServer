@@ -1,5 +1,8 @@
 package io.umehara.lunchFinderServer.category
 
+import io.umehara.lunchFinderServer.restutils.BadRequestException
+import io.umehara.lunchFinderServer.restutils.ExceptionMessage
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -58,7 +61,11 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
         parameterSource.addValue("name", categoryModelNew.name)
         parameterSource.addValue("restaurant_count", 0)
 
-        return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
+        try {
+            return simpleJdbcInsert.executeAndReturnKey(parameterSource).toLong()
+        } catch (e: DuplicateKeyException) {
+            throw BadRequestException(ExceptionMessage.DUPLICATE_KEY_EXCEPTION)
+        }
     }
 
     override fun increment(id: Long) {

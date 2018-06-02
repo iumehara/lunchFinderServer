@@ -1,9 +1,14 @@
 package io.umehara.lunchFinderServer.category
 
+import io.umehara.lunchFinderServer.restutils.BadRequestException
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
+import org.springframework.dao.DuplicateKeyException
+import java.util.ArrayList
+
+
 
 abstract class CategoryDataMapperTest {
     private lateinit var categoryDataMapper: CategoryDataMapper
@@ -90,6 +95,21 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(category!!.restaurantCount, equalTo(2L))
+    }
+
+    @Test(expected = BadRequestException::class)
+    fun createDuplicateNameThrowsException() {
+
+        val category1 = CategoryModelNew("Curry")
+        categoryDataMapper.create(category1)
+        categoryDataMapper.create(category1)
+
+
+        val categories = categoryDataMapper.all()
+
+
+        assertThat(categories.size, equalTo(1))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
     }
 
     @Test
