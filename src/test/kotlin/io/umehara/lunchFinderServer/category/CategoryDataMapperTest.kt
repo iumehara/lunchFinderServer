@@ -5,9 +5,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
 import org.junit.Test
-import org.springframework.dao.DuplicateKeyException
-import java.util.ArrayList
-
 
 
 abstract class CategoryDataMapperTest {
@@ -29,9 +26,9 @@ abstract class CategoryDataMapperTest {
 
     @Test
     fun createAndGetAllCategories() {
-        val category1 = CategoryModelNew("Curry")
+        val category1 = CategoryModelNew("curry")
         categoryDataMapper.create(category1)
-        val category2 = CategoryModelNew("Sushi")
+        val category2 = CategoryModelNew("sushi")
         categoryDataMapper.create(category2)
 
 
@@ -39,17 +36,17 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(2))
-        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
-        assertThat(categories[1], equalTo(CategoryModelDB(2, "Sushi")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "curry")))
+        assertThat(categories[1], equalTo(CategoryModelDB(2, "sushi")))
     }
 
     @Test
     fun createAndGetSomeCategoriesWhere() {
-        val category1 = CategoryModelNew("Curry")
+        val category1 = CategoryModelNew("curry")
         categoryDataMapper.create(category1)
-        val category2 = CategoryModelNew("Sushi")
+        val category2 = CategoryModelNew("sushi")
         categoryDataMapper.create(category2)
-        val category3 = CategoryModelNew("Spicy")
+        val category3 = CategoryModelNew("spicy")
         categoryDataMapper.create(category3)
 
 
@@ -57,8 +54,8 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(2))
-        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
-        assertThat(categories[1], equalTo(CategoryModelDB(3, "Spicy")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "curry")))
+        assertThat(categories[1], equalTo(CategoryModelDB(3, "spicy")))
     }
 
     @Test
@@ -71,19 +68,19 @@ abstract class CategoryDataMapperTest {
 
     @Test
     fun createAndGetOneCategory() {
-        val categoryModelNew = CategoryModelNew("Curry")
+        val categoryModelNew = CategoryModelNew("curry")
         categoryDataMapper.create(categoryModelNew)
 
 
         val category = categoryDataMapper.get(1L)
 
 
-        assertThat(category, equalTo(CategoryModelDB(1, "Curry")))
+        assertThat(category, equalTo(CategoryModelDB(1, "curry")))
     }
 
     @Test
     fun createIncrementAndDecrementCategory() {
-        val categoryModelNew = CategoryModelNew("Curry")
+        val categoryModelNew = CategoryModelNew("curry")
         val categoryId = categoryDataMapper.create(categoryModelNew)
 
 
@@ -97,10 +94,22 @@ abstract class CategoryDataMapperTest {
         assertThat(category!!.restaurantCount, equalTo(2L))
     }
 
+    @Test
+    fun createSavesCategoryWithLowercaseName() {
+        val categoryModelNew = CategoryModelNew("CuRrY")
+        val categoryId = categoryDataMapper.create(categoryModelNew)
+
+
+        val category = categoryDataMapper.get(categoryId)
+
+
+        assertThat(category!!.name, equalTo("curry"))
+    }
+
     @Test(expected = BadRequestException::class)
     fun createDuplicateNameThrowsException() {
 
-        val category1 = CategoryModelNew("Curry")
+        val category1 = CategoryModelNew("curry")
         categoryDataMapper.create(category1)
         categoryDataMapper.create(category1)
 
@@ -109,14 +118,14 @@ abstract class CategoryDataMapperTest {
 
 
         assertThat(categories.size, equalTo(1))
-        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "curry")))
     }
 
     @Test
     fun destroyRemovesCategory() {
-        val category1 = CategoryModelNew("Curry")
+        val category1 = CategoryModelNew("curry")
         categoryDataMapper.create(category1)
-        val category2 = CategoryModelNew("Sushi")
+        val category2 = CategoryModelNew("sushi")
         categoryDataMapper.create(category2)
 
 
@@ -125,6 +134,6 @@ abstract class CategoryDataMapperTest {
 
         val categories = categoryDataMapper.all()
         assertThat(categories.size, equalTo(1))
-        assertThat(categories[0], equalTo(CategoryModelDB(1, "Curry")))
+        assertThat(categories[0], equalTo(CategoryModelDB(1, "curry")))
     }
 }

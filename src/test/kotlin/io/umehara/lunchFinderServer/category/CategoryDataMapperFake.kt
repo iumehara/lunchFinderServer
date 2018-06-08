@@ -32,12 +32,12 @@ class CategoryDataMapperFake: CategoryDataMapper {
         val id = categories.size + 1L
 
         categories.forEach { category ->
-            if (category.name.equals(categoryModelNew.name)) {
+            if (category.name.equals(categoryModelNew.name.toLowerCase())) {
                 throw BadRequestException(ExceptionMessage.DUPLICATE_KEY_EXCEPTION)
             }
         }
 
-        categories.add(CategoryModelDB(id, categoryModelNew.name))
+        categories.add(CategoryModelDB(id, categoryModelNew.name.toLowerCase()))
         return id
     }
 

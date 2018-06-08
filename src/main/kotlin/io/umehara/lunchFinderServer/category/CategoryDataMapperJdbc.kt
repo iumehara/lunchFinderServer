@@ -58,7 +58,7 @@ class CategoryDataMapperJdbc(val jdbcTemplate: JdbcTemplate): CategoryDataMapper
                 .usingGeneratedKeyColumns("id")
 
         val parameterSource = MapSqlParameterSource()
-        parameterSource.addValue("name", categoryModelNew.name)
+        parameterSource.addValue("name", categoryModelNew.name.toLowerCase())
         parameterSource.addValue("restaurant_count", 0)
 
         try {
