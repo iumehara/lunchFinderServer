@@ -3,7 +3,6 @@ package io.umehara.lunchFinderServer.restaurant
 import io.umehara.lunchFinderServer.category.CategoryDataMapper
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import java.util.Arrays.asList
 
 @Repository
 class RestaurantRepoDB(
@@ -14,8 +13,46 @@ class RestaurantRepoDB(
         return dataMapper.all()
     }
 
+    override fun allFull(): List<RestaurantModel> {
+        val categoriesMap = categoryDataMapper
+                .all()
+                .map { it.id to it }
+                .toMap()
+
+        return dataMapper.all()
+                .map {restaurantModelDB ->
+                    RestaurantModel(
+                            restaurantModelDB,
+                            restaurantModelDB
+                                    .categoryIds
+                                    .filter { categoryId -> categoriesMap[categoryId] != null}
+                                    .map { categoryId -> categoriesMap[categoryId]!! }
+                                    .toList()
+                    )}
+                .toList()
+    }
+
     override fun where(categoryId: Long): List<RestaurantModelDB> {
         return dataMapper.allByCategoryId(categoryId)
+    }
+
+    override fun whereFull(categoryId: Long): List<RestaurantModel> {
+        val categoriesMap = categoryDataMapper
+                .all()
+                .map { it.id to it }
+                .toMap()
+
+        return dataMapper.allByCategoryId(categoryId)
+                .map {restaurantModelDB ->
+                    RestaurantModel(
+                            restaurantModelDB,
+                            restaurantModelDB
+                                    .categoryIds
+                                    .filter { categoryId -> categoriesMap[categoryId] != null}
+                                    .map { categoryId -> categoriesMap[categoryId]!! }
+                                    .toList()
+                    )}
+                .toList()
     }
 
     override fun get(id: Long): RestaurantModel {

@@ -11,6 +11,11 @@ class RestaurantsController (val repo: RestaurantRepo) {
         return repo.all()
     }
 
+    @GetMapping("full")
+    fun indexFull(): List<RestaurantModel> {
+        return repo.allFull()
+    }
+
     @GetMapping("{id}")
     fun show(@PathVariable id: Long): RestaurantModel {
         return repo.get(id)

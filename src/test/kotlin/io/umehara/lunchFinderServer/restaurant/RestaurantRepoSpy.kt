@@ -13,6 +13,10 @@ class RestaurantRepoSpy : RestaurantRepo {
         )
     }
 
+    override fun allFull(): List<RestaurantModel> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     var whereArgument: Long? = null
     override fun where(categoryId: Long): List<RestaurantModelDB> {
         whereArgument = categoryId
@@ -20,6 +24,9 @@ class RestaurantRepoSpy : RestaurantRepo {
                 Pizzakaya(categoryIds = listOf(Pizza().id)).modelDB(),
                 Moti(categoryIds = listOf(Spicy().id)).modelDB()
         )
+    }
+    override fun whereFull(categoryId: Long): List<RestaurantModel> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun get(id: Long): RestaurantModel {
